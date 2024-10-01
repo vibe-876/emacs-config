@@ -1,0 +1,9 @@
+#+title: Emacs Config
+#+author: Camilla A.
+
+
+The programming is guess what: the programming thing.
+This is just my emacs config file, nothing special.
+
+To evaluate it, just run: ~C-x C-s~, ~C-c C-v t~, and finally, ~M-x load-file init.el~.
+After that, you can just do ~C-c M-p~ to open the config, and ~M-x my/load-init~ to reload it.
