@@ -1,0 +1,367 @@
+:PROPERTIES:
+:header-args: :session init-two :tangle init.el
+:END:
+#+title: Init File
+#+author:  Camilla A.
+
+
+* Packages
+This is actually really simple, but it needs to be at the top.
+This is because it is loading packages, which /everything/ else may be dependant on.
+#+begin_src elisp
+  (require 'package)
+  (add-to-list 'package-archives
+               '("melpa" . "http://melpa.org/packages/") t)
+
+  (setq use-package-always-ensure t
+        use-package-always-defer t)
+#+end_src
+* Programming
+** Emacs Lisp
+This adds:
+- Rainbow parentheses
+- Paredit (my beloved).
+  
+#+begin_src elisp
+  (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
+  (add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode)
+#+end_src
+
+Also, a function to tangle and load my ~init.org~ file.
+#+begin_src elisp
+  (defun my/load-init (&optional config-dir)
+    "Tangle and reload ~/.emacs.d/init.org, because it is a pain to do it manually.
+
+  If called with the config-dir argument, then it will assume that your literate file
+  is called init.org, and that it will tangle to init.el -- edit accordingly if that is
+  not the case."
+    (interactive)
+    (when (equal nil config-dir) (setq config-dir (concat (getenv "HOME") "/.emacs.d")))
+    
+    (save-buffer (concat config-dir "/init.org"))
+    (org-babel-tangle nil (concat config-dir "/init.org"))
+    (load-file (concat config-dir "/init.el"))
+    (message "Done :)"))
+#+end_src
+
+Remove the stuff from ~*scratch*~
+#+begin_src elisp
+  (setq initial-scratch-message "")
+#+end_src
+
+And I also want to be able to easily open this file, so I'll write a little keybinding for that.
+#+begin_src elisp
+  (global-set-key (kbd "C-c M-p") (lambda nil "Open ~/.emacs.d/init.org ."
+  				  (interactive)
+  				  (find-file (concat (getenv "HOME") "/.emacs.d/init.org"))))
+#+end_src
+** Scheme
+I'll probably just be using GNU Guile, and maybe MIT if SICP needs it.
+Since chicken compiles to C, it may be able to be ran on an arduino, so I'm going to include that.
+
+We start by getting ~Geiser~.
+#+begin_src elisp
+  (use-package geiser
+    :defer nil
+    :config
+    (setq geiser-active-implementations '(guile chicken))
+    :hook ((scheme-mode . rainbow-delimiters-mode)
+  	 (scheme-mode . enable-paredit-mode)))
+#+end_src
+
+Now, we configre individual Schemes.
+#+begin_src elisp
+  (use-package geiser-guile
+    :defer t
+    :config
+    (setq geiser-guile-binary "/usr/bin/guile"))
+
+  (use-package geiser-chicken
+    :defer t
+    :config
+    (setq geiser-chicken-binary "/sbin/chicken-csi"))
+#+end_src
+** Haskell
+#+begin_src elisp
+  (use-package haskell-mode
+    :ensure t
+    :defer t
+    :bind
+    (:map haskell-mode-map ("C-c C-c" . haskell-compile))
+    (:map haskell-cabal-mode-map ("C-c C-c" . haskell-compile))
+    :config
+    (let ((cam-ghcup-path (expand-file-name "~/.ghcup/bin")))
+      (setenv "PATH" (concat (getenv "PATH") ":" cam-ghcup-path))
+      (add-to-list 'exec-path cam-ghcup-path)))
+#+end_src
+** Rust
+#+begin_src elisp
+  (setenv "PATH" (concat (getenv "PATH")
+                         ":"
+                         (concat (getenv "HOME") "/.cargo/bin")))
+
+  (add-to-list 'exec-path (concat (getenv "HOME")
+                                  "/.cargo/bin"))
+
+
+  (use-package rust-mode
+    :ensure t
+    :defer t)
+
+  (use-package rustic
+    :ensure t
+    :defer t
+    :mode ("\\.rs$" . rustic-mode)
+    :config
+    (setq rustic-format-on-save nil
+          rustic-lsp-client 'lsp-mode)
+    :custom
+    (rustic-cargo-use-last-stored-arguments t)
+    (rustic-analyzer-command '("rustup" "run" "stable" "rust-analyzer")))
+#+end_src
+** Arduino
+For Uni stuff...
+#+begin_src elisp
+  (use-package arduino-mode
+    :ensure t
+    :defer t
+    :config
+    (add-to-list 'auto-mode-alist '("\.ino$" . arduino-mode)))
+#+end_src
+
+And for fun.
+#+begin_src elisp
+  (use-package ulisp-repl
+    :ensure t
+    :defer nil)
+#+end_src
+** Magit
+#+begin_src elisp
+  (use-package magit
+    :ensure t
+    :defer t)
+#+end_src
+* Org
+** Agenda
+For my sanity...
+#+begin_src elisp
+  (setq org-directory (concat (getenv "HOME") "/Documents/Org")
+        org-agenda-directory (concat org-directory "/Agenda/")
+        org-agenda-files (directory-files-recursively org-agenda-directory "\\.org$"))
+
+  (global-set-key (kbd "C-c a") 'org-agenda)
+#+end_src
+
+Furthermore, Choi has now done a casual agenda, so that can go in here as well, although it may not be here forever...
+#+begin_src elisp
+  (use-package casual-agenda
+    :ensure t
+    :defer t
+    :bind (:map org-agenda-mode-map ("C-o" . casual-agenda-tmenu))
+    :after (org-agenda))
+#+end_src
+
+For the clock, we want to enable persistence across sessions, as described in the docs.
+#+begin_src elisp
+  (setq org-clock-persist 'history)
+  (org-clock-persistence-insinuate)
+#+end_src
+
+We also want to add a capture template for capturing things.
+Because of reasons I do not know, I have to declare these variables, instead of doing the ~concat~ thing inline.
+#+begin_src elisp
+  (setq org-agenda-work-file (concat org-agenda-directory "work.org")
+        org-agenda-social-file (concat org-agenda-directory "social.org")
+        org-agenda-personal-file (concat org-agenda-directory "personal.org"))
+#+end_src
+
+And here we use those variables to actually do things.
+#+begin_src elisp
+  (setq org-capture-templates
+        '(("u" "Uni Stuff" entry (file+headline org-agenda-work-file "Uni")
+           "* TODO [#C] %?\nSCHEDULED: %t")
+  	("s" "Social Stuff" entry (file+headline org-agenda-social-file "Misc")
+  	 "* TODO [#C] %?\nSCHEDULED: %t")
+  	("p" "Personal" entry (file+headline org-agenda-personal-file "Stuff ToDo")
+  	 "* TODO [#C] %?\nSCHEDULED: %t")))
+#+end_src
+
+And give it a little keybinding.
+#+begin_src elisp
+  (global-set-key (kbd "C-c c") 'org-capture)
+#+end_src
+** Org Rice
+#+begin_src elisp
+  (require 'org-bullets)
+
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+  (add-hook 'org-mode-hook 'variable-pitch-mode)
+  (add-hook 'org-mode-hook 'visual-line-mode)
+
+  (font-lock-add-keywords 'org-mode
+                          '(("^ *\\([-]\\) "
+                             (0 (prog1 () (compose-region (match-beginning 1) (match-end 1) "•"))))))
+
+  (setq org-startup-indented t)
+  (setq org-hide-emphasis-markers t)
+  (setq org-startup-folded t)
+
+
+  (custom-theme-set-faces
+   'user
+   '(org-block ((t (:inherit fixed-pitch))))
+   '(org-code ((t (:inherit (shadow fixed-pitch)))))
+   '(org-document-info ((t (:foreground "dark orange"))))
+   '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
+   '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
+   '(org-link ((t (:foreground "deep sky blue" :underline t))))
+   '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+   '(org-property-value ((t (:inherit fixed-pitch))) t)
+   '(org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+   '(org-table ((t (:inherit fixed-pitch :foreground "#83a598"))))
+   '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
+   '(org-verbatim ((t (:inherit (shadow fixed-pitch)))))
+   '(org-level-8 ((t (,@headline ,@variable-tuple))))
+   '(org-level-7 ((t (,@headline ,@variable-tuple))))
+   '(org-level-6 ((t (,@headline ,@variable-tuple))))
+   '(org-level-5 ((t (,@headline ,@variable-tuple))))
+   '(org-level-4 ((t (,@headline ,@variable-tuple :height 1.1))))
+   '(org-level-3 ((t (,@headline ,@variable-tuple :height 1.25))))
+   '(org-level-2 ((t (,@headline ,@variable-tuple :height 1.5))))
+   '(org-level-1 ((t (,@headline ,@variable-tuple :height 1.75))))
+   '(org-document-title ((t (,@headline ,@variable-tuple :height 1.5 :underline nil)))))
+#+end_src
+* Media
+** ERC
+IRC is cool, so we do some setup for it.
+We set the full name, and a username, alonside some other variables.
+#+begin_src elisp
+  (setq erc-server "irc.libera.chat"
+        etc-track-shorten-start 8
+        erc-kill-buffer-on-part t
+        erc-auto-query 'bury
+        erc-user-full-name "cam a."
+        erc-nick "vibe876")
+#+end_src
+** Eradio
+Some lovely music for while doing things, in a FLOSS manner :) .
+#+begin_src elisp
+  (use-package eradio
+    :defer t
+    :ensure t
+    :bind (("C-c r p" . eradio-play)
+           ("C-c r s" . eradio-stop)
+           ("C-c r t" . eradio-toggle))
+    :config (setq eradio-player '("mpv" "--no-video" "--no-terminal")
+                  eradio-channels '(("lush - soma fm"         .  "https://somafm.com/lush.pls")
+                                    ("defcon - soma fm"       . "https://somafm.com/defcon256.pls")
+                                    ("deep space - soma fm"   . "https://somafm.com/deepspaceone.pls")
+                                    ("ind p-r - soma fm"      . "https://somafm.com/indiepop.pls")
+                                    ("trippin - soma fm"      . "https://somafm.com/thetrip.pls")
+                                    ("dark ambient - soma fm" . "https://somafm.com/darkzone256.pls")
+                                    ("celtic - some fm"       .  "https://somafm.com/thistle.pls")
+                                    ("analog rock - soma fm"  . "https://somafm.com/digitalis256.pls")
+                                    ("n5MD - soma fm"         . "https://somafm.com/n5md.pls")
+                                    ("drone zone - soma fm"   . "https://somafm.com/dronezone256.pls")
+                                    ("vaporwave - soma fm"    . "https://somafm.com/vaporwaves.pls")
+                                    ("dark ind amb - soma fm" . "https://somafm.com/doomed256.pls"))))
+
+#+end_src
+
+And also a keybinding for my favourite channel (defcon, at soma fm).
+#+begin_src elisp
+  (global-set-key (kbd "C-c r d") (lambda nil "Play somafm -- defcon, via eradio."
+  				  (interactive)
+  				  (eradio-play "https://somafm.com/defcon256.pls")))
+#+end_src
+** Elfeed
+#+begin_src elisp
+  (use-package elfeed
+    :defer t
+    :bind ("C-c e" . 'elfeed)
+    :config
+    (setq elfeed-feeds
+          '(("https://planet.emacslife.com/atom.xml" blog emacs)
+            ("https://summeremacs.github.io/posts/index.xml" blog emacs)
+            ("https://planet.haskell.org/rss20.xml" programming haskell tech)
+            ("https://xkcd.com/rss.xml" comic)
+            ("https://www.smbc-comics.com/comic/rss" comic)
+            ("https://www.monkeyuser.com/index.xml" comic)
+            ("https://archlinux.org/feeds/news/" arch linux tech)
+            ("https://www.theregister.com/security/cyber_crime/headlines.atom" tech security news)
+            ("https://www.theregister.com/on_prem/hpc/headlines.atom" tech hpc news)
+            ("https://www.youtube.com/feeds/videos.xml?channel_id=UCtEb98_ptdXj6N6woTfgxVQ" blog video trans) ;; Icky
+            ("https://www.youtube.com/feeds/videos.xml?channel_id=UC3_kehZbfRz-KrjXIqeIiPw" blog video trans) ;; Leadhead
+            ("https://www.youtube.com/feeds/videos.xml?channel_id=UCzfyYtgvkx5mLy8nlLlayYg" video show)       ;; Helluva Boss
+            ("https://www.youtube.com/feeds/videos.xml?channel_id=UCVHxJghKAB_kA_5LMM8MD3w" phil video)       ;; oliSUNvia
+            ("https://www.youtube.com/feeds/videos.xml?channel_id=UC3cpN6gcJQqcCM6mxRUo_dA" video spooky)     ;; Wendigoon
+            ("https://www.youtube.com/feeds/videos.xml?channel_id=UCIPfjC8FVLdul4-35JekB1g" video spooky)     ;; Real Horror
+            ("https://www.youtube.com/feeds/videos.xml?channel_id=UCtHaxi4GTYDpJgMSGy7AeSw" video tech)       ;; Michael Reeves
+            )))
+#+end_src
+* Emacs Itself
+** Themes
+Dracula (obviously)
+#+begin_src elisp
+  ;; (use-package arc-dark-theme
+  ;;   :ensure t
+  ;;   :straight (:host github :repo "cfraz89/arc-dark-theme")
+  ;;   :config
+  ;;   (load-theme 'arc-dark t))
+
+  ;; ;;(load-theme 'dracula t)
+  (load-theme 'dracula t)
+#+end_src
+
+And for some transparency
+#+begin_src elisp
+  (set-frame-parameter (selected-frame) 'alpha '(90 . 50))
+  (add-to-list 'default-frame-alist '(alpha . (90 . 50)))
+#+end_src
+** Misc
+#+begin_src elisp
+  (setq inhibit-startup-message t)
+  (tool-bar-mode -1)
+  (menu-bar-mode -1)
+  (scroll-bar-mode -1)
+  (defalias 'yes-or-no-p 'y-or-n-p)
+
+  (global-display-line-numbers-mode)
+
+  (set-face-attribute 'default nil :height 110)
+
+  (setq scroll-step 1)
+
+  (setq dired-vc-rename-file t
+        dired-kill-when-opening-new-dired-buffer t)
+
+  (add-hook 'dired-mode-hook (lambda () (dired-hide-details-mode 1)))
+  (add-hook 'dired-mode-hook (lambda () (dired-omit-mode 1)))
+
+
+  (use-package which-key
+    :ensure t)
+#+end_src
+
+And for help functions, we want to be able to have access to the casual-info package.
+#+begin_src elisp
+  (use-package casual-info
+    :ensure t
+    :defer t
+    :bind (:map Info-mode-map ("C-o" . casual-info-tmenu)))
+#+end_src
+
+I want to have easy key bindings, so this goes below.
+#+begin_src elisp
+  (use-package which-key
+    :ensure t
+    :defer nil
+    :config
+    (which-key-mode))
+#+end_src
+* Writing
+** SPAG
+#+begin_src elisp
+  (setq ispell-program-name "hunspell")
+  (global-set-key (kbd "M-£") 'ispell-region)
+#+end_src
