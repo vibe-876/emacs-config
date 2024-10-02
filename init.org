@@ -5,7 +5,12 @@
 #+author:  Camilla A.
 
 
-* Packages, Procedures, and Macros
+* Stuff For the Start
+** Garbage Collector Tweaks
+I want emacs to start quickly, so following a [[https://systemcrafters.net/emacs-from-scratch/cut-start-up-time-in-half/][System Crafters tutorial]], we tweak the behaviour of the garbage collector during start, and then change it back afterwards (see later in the file for changing it back).
+#+begin_src elisp
+  (setq gc-cons-threshold (* 50 1000 1000))
+#+end_src
 ** Packages
 This is actually really simple, but it needs to be at the top.
 This is because it is loading packages, which /everything/ else may be dependant on.
@@ -21,7 +26,7 @@ Also, we can set ~use-package~ to defer by default (as that is my default for pa
   (setq use-package-always-ensure t
         use-package-always-defer t)
 #+end_src
-
+* Procedures, and Macros
 ** Procedures
 Nothing in here for now...
 ** Macros
@@ -229,6 +234,13 @@ And give it a little keybinding.
 #+begin_src elisp
   (global-set-key (kbd "C-c c") 'org-capture)
 #+end_src
+** Exporting
+Remove the useless stuff from the bottom of org to html exports.
+#+begin_src elisp
+  (setq org-html-validation-link nil
+        org-export-with-author nil
+        org-export-with-toc nil)
+#+end_src
 ** Org Rice
 I wouldn't try to understand this if I were you -- this is the only bit of my config that I didn't hand-write, and instead copied off of a website. I'll link it when I find it again.
 #+begin_src elisp
@@ -355,6 +367,15 @@ And for some transparency
   (set-frame-parameter (selected-frame) 'alpha '(90 . 50))
   (add-to-list 'default-frame-alist '(alpha . (90 . 50)))
 #+end_src
+** Dired
+I want casual dired.
+#+begin_src elisp
+  (use-package casual-dired
+    :ensure t
+    :defer t
+    :bind (:map dired-mode-map
+  	      ("C-o" . casual-dired-tmenu)))
+#+end_src
 ** Misc
 Misc things to make emacs just that bit more pretty.
 #+begin_src elisp
@@ -405,4 +426,9 @@ This is /very/ useful when writing, from org mode, to program comments.
 #+begin_src elisp
   (setq ispell-program-name "hunspell")
   (global-set-key (kbd "M-£") 'ispell-region)
+#+end_src
+* Final Stuff
+And now finally, we change the garbage collector back.
+#+begin_src elisp
+  (setq gc-cons-threshold (* 2 1000 1000))
 #+end_src
