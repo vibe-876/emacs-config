@@ -133,7 +133,7 @@ For Uni stuff...
   (use-package arduino-mode
     :ensure t
     :config
-    (add-to-list 'auto-mode-alist '("\.ino$" . arduino-mode)))
+    (add-to-list 'auto-mode-alist '("\\.ino$" . arduino-mode)))
 #+end_src
 
 And for fun.
