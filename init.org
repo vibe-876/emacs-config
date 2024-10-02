@@ -372,6 +372,30 @@ RSS is a good way to keep up with news, so we want to use elfeed to do that.
             )))
 #+end_src
 * Emacs Itself
+** Movement
+~other-window~ is a pain sometimes, so we will use ~ace-window~.
+#+begin_src elisp
+  (use-package ace-window
+    :demand t
+    :config
+    (global-set-key (kbd "C-x o") 'ace-window)
+    (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)
+  	aw-dispatch-always t
+  	aw-background nil))
+#+end_src
+
+Also, ~goto-line~ isn't quite as cool as ~avy~, so we'll use that, alongside ~casual-avy~.
+I'm willing to throw away ~goto-line~'s ~M-g g~ so that it can go towards ~casual-avy-tmenu~.
+#+begin_src elisp
+  (use-package avy
+    :demand t
+    :config
+    (global-set-key (kbd "M-g f") 'avy-goto-line)
+    (global-set-key (kbd "M-g w") 'avy-goto-word-1))
+
+  (use-package casual-avy
+    :bind ("M-g g" . casual-avy-tmenu))
+#+end_src
 ** Themes
 Dracula (obviously).
 #+begin_src elisp
@@ -395,17 +419,6 @@ I want casual dired.
     :defer t
     :bind (:map dired-mode-map
   	      ("C-o" . casual-dired-tmenu)))
-#+end_src
-** Window Stuff
-~other-window~ is a pain sometimes, so we will use ~ace-window~.
-#+begin_src elisp
-  (use-package ace-window
-    :defer nil
-    :config
-    (global-set-key (kbd "C-x o") 'ace-window)
-    (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)
-  	aw-dispatch-always t
-  	aw-background nil))
 #+end_src
 ** Games
 We all love some games, every now and again.
