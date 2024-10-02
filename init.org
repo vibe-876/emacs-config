@@ -8,6 +8,7 @@
 * Stuff For the Start
 ** Garbage Collector Tweaks
 I want emacs to start quickly, so following a [[https://systemcrafters.net/emacs-from-scratch/cut-start-up-time-in-half/][System Crafters tutorial]], we tweak the behaviour of the garbage collector during start, and then change it back afterwards (see later in the file for changing it back).
+Basically, ~gc-cons-threshold~ is simply how many bytes of data can be allocated before the garbage collector does its thing. By making this really high for a bit, we can prevent the garbage collector from running too much when we start emacs, and then just turn it back before we do anything (ie at the bottom of this file).
 #+begin_src elisp
   (setq gc-cons-threshold (* 50 1000 1000))
 #+end_src
