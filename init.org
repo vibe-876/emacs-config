@@ -102,12 +102,14 @@ We make sure to add ghcup's binaries to the path, and add some keybindings so th
 Much like Haskell, we add cargo's binaries to the path.
 I should probably put this into the ~use-package~ for ~rust-mode~, but that's a task for future Cam...
 #+begin_src elisp
+  (setq cargo-path (concat (getenv "HOME")
+  			 "/.cargo/bin"))
+
   (setenv "PATH" (concat (getenv "PATH")
                          ":"
-                         (concat (getenv "HOME") "/.cargo/bin")))
+                         cargo-path))
 
-  (add-to-list 'exec-path (concat (getenv "HOME")
-                                  "/.cargo/bin"))
+  (add-to-list 'exec-path cargo-path)
 #+end_src
 
 And then we just use ~use-package~ to setup ~rust-mode~ and ~rustic~.
