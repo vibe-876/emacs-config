@@ -235,6 +235,16 @@ And give it a little keybinding.
 #+begin_src elisp
   (global-set-key (kbd "C-c c") 'org-capture)
 #+end_src
+** Babel
+We want an additional keybinding for emacs lisp code.
+
+I don't know if I can do multiple things inside ~add-to-list~, in the same way that you can do with ~setq~, which I'll check later.
+For now, this will do.
+#+begin_src elisp
+  (add-to-list 'org-structure-template-alist '("ll" . "src elisp"))
+  (add-to-list 'org-structure-template-alist '("ls" . "src scheme"))
+  (add-to-list 'org-structure-template-alist '("lh" . "src haskell"))
+#+end_src
 ** Exporting
 Remove the useless stuff from the bottom of org to html exports.
 #+begin_src elisp
