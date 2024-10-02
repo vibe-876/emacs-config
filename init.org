@@ -396,6 +396,22 @@ I want casual dired.
     :bind (:map dired-mode-map
   	      ("C-o" . casual-dired-tmenu)))
 #+end_src
+** Window Stuff
+~other-window~ is a pain sometimes, so we will use ~ace-window~.
+#+begin_src elisp
+  (use-package ace-window
+    :defer nil
+    :config
+    (global-set-key (kbd "C-x o") 'ace-window)
+    (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)
+  	aw-background nil))
+#+end_src
+** Games
+We all love some games, every now and again.
+#+begin_src elisp
+  (use-package poker)
+  (use-package 2048-game)
+#+end_src
 ** Misc
 Misc things to make emacs just that bit more pretty.
 #+begin_src elisp
@@ -439,12 +455,6 @@ I want to have easy key bindings, so this goes below.
     :defer nil
     :config
     (which-key-mode))
-#+end_src
-** Games
-We all love some games, every now and again.
-#+begin_src elisp
-  (use-package poker)
-  (use-package 2048-game)
 #+end_src
 * Writing
 ** SPAG
