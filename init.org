@@ -29,7 +29,7 @@ Also, we can set ~use-package~ to defer by default (as that is my default for pa
 
 We should also list *all* installed packages, done below. These are the packages that will not be auto-removed when ~M-x package-autoremove~ is called.
 #+begin_src elisp
-  (add-to-list 'package-selected-packages '(lsp-mode treemacs focus yaml pkg-info auctex which-key dracula-theme elfeed emms eradio geiser geiser-guile geiser-chicken haskell-mode casual-agenda casual-avy casual-dired casual-info magit org-bullets org-ref org-roam org-superstar paredit poker rainbow-delimiters rustic ulisp-repl use-package ace-window avy academic-phrases arduino-mode 2048-game bui dap-mode casual 0blayout))
+  (setq package-selected-packages '(lsp-mode treemacs focus yaml pkg-info auctex which-key dracula-theme elfeed emms eradio geiser geiser-guile geiser-chicken haskell-mode casual-agenda casual-avy casual-dired casual-info magit org-bullets org-ref org-roam org-superstar paredit poker rainbow-delimiters rustic ulisp-repl use-package ace-window avy academic-phrases arduino-mode 2048-game bui dap-mode casual 0blayout))
 #+end_src
 * Procedures, and Macros
 ** Procedures
@@ -404,6 +404,7 @@ I want casual dired.
     :config
     (global-set-key (kbd "C-x o") 'ace-window)
     (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)
+  	aw-dispatch-always t
   	aw-background nil))
 #+end_src
 ** Games
