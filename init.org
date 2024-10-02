@@ -31,21 +31,26 @@ This adds:
   (add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode)
 #+end_src
 
-Also, a function to tangle and load my ~init.org~ file.
+Also, a function to tangle and load my ~init.org~ file, and bind it to ~M-p M-s~.
 #+begin_src elisp
-  (defun my/load-init (&optional config-dir)
+  (defun my/load-init (&optional config-dir config-file output-file)
     "Tangle and reload ~/.emacs.d/init.org, because it is a pain to do it manually.
 
-  If called with the config-dir argument, then it will assume that your literate file
-  is called init.org, and that it will tangle to init.el -- edit accordingly if that is
-  not the case."
+  If a different file is used as a config, then arguments can be passed. config-dir
+  is the directory that my/load-init will assume the config files live in, config-file
+  is the literate org file that is to be tangled, and output-file is the emacs lisp
+  file that will be tangled to, and then loaded."
     (interactive)
     (when (equal nil config-dir) (setq config-dir (concat (getenv "HOME") "/.emacs.d")))
+    (when (equal nil config-file) (setq config-file "/init.org"))
+    (when (equal nil output-file) (setq output-file "/init.el"))
     
-    (save-buffer (concat config-dir "/init.org"))
-    (org-babel-tangle nil (concat config-dir "/init.org"))
-    (load-file (concat config-dir "/init.el"))
+    (save-buffer (concat config-dir config-file))
+    (org-babel-tangle nil (concat config-dir config-file))
+    (load-file (concat config-dir output-file))
     (message "Done :)"))
+
+  (global-set-key (kbd "M-p M-s") 'my/load-init)
 #+end_src
 
 Remove the stuff from ~*scratch*~
