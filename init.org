@@ -30,6 +30,8 @@ I want a macro to simplify the creation of a regular expression to describe a fi
   (defmacro my/file-extension-regex (file-extension)
     (list 'concat "\\." file-extension "$"))
 #+end_src
+
+I do want another macro, that can do the full thing (ie ~(my/new-prog-lang "ino" 'arduino-mode)~ => ~("\\.ino$" . arduino-mode)~, but I can't figure out how to do that, so that's for later.
 * Programming
 ** Emacs Lisp
 This adds:
@@ -280,6 +282,8 @@ We set the full name, and a username, alonside some other variables.
         erc-auto-query 'bury
         erc-user-full-name "cam a."
         erc-nick "vibe876")
+
+  (global-set-key (kbd "M-p e") 'erc-tls)
 #+end_src
 ** Eradio
 Some lovely music for while doing things, in a FLOSS manner :) .
