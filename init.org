@@ -1,5 +1,5 @@
 :PROPERTIES:
-:header-args: :session init-two :tangle init.el
+:header-args: :session init :tangle init.el
 :END:
 #+title: Init File
 #+author:  Camilla A.
@@ -236,7 +236,11 @@ And give it a little keybinding.
   (global-set-key (kbd "C-c c") 'org-capture)
 #+end_src
 ** Babel
-We want an additional keybinding for emacs lisp code.
+First, so that babel can support arduino code, we want to load ~org-contrib~ (commented for now, because I may be able to implement it myself...).
+#+begin_src elisp
+  ;; (use-package org-contrib
+  ;;   :ensure t)
+#+end_src
 
 I don't know if I can do multiple things inside ~add-to-list~, in the same way that you can do with ~setq~, which I'll check later.
 For now, this will do.
@@ -244,6 +248,7 @@ For now, this will do.
   (add-to-list 'org-structure-template-alist '("ll" . "src elisp"))
   (add-to-list 'org-structure-template-alist '("ls" . "src scheme"))
   (add-to-list 'org-structure-template-alist '("lh" . "src haskell"))
+  (add-to-list 'org-structure-template-alist '("la" . "src arduino"))
 #+end_src
 ** Exporting
 Remove the useless stuff from the bottom of org to html exports.
