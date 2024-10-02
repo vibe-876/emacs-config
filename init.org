@@ -304,9 +304,13 @@ RSS is a good way to keep up with news, so we want to use elfeed to do that.
 #+end_src
 * Emacs Itself
 ** Themes
-Dracula (obviously)
+Dracula (obviously).
 #+begin_src elisp
-  (load-theme 'dracula t)
+  (use-package dracula-theme
+    :defer nil
+    :ensure t
+    :config
+    (load-theme 'dracula t))
 #+end_src
 
 And for some transparency
