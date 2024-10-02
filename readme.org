@@ -11,3 +11,6 @@ After that, you can just do ~C-c M-p~ to open the config, and ~M-x my/load-init~
 
 * Why Is This On Github
 Backup. If you want to run it, run it, but you're on your own if it breaks your system (although I see no reason why it would)...
+
+* Notes
+The whole thing is a literate org file, so you can just click on the ~init.org~ file, and it should give the documentation for it.
