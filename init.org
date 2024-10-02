@@ -154,7 +154,7 @@ For my sanity...
 #+begin_src elisp
   (setq org-directory (concat (getenv "HOME") "/Documents/Org")
         org-agenda-directory (concat org-directory "/Agenda/")
-        org-agenda-files (directory-files-recursively org-agenda-directory "\\.org$"))
+        org-agenda-files (directory-files-recursively org-agenda-directory "^[a-z\-]+.org$"))
 
   (global-set-key (kbd "C-c a") 'org-agenda)
 #+end_src
