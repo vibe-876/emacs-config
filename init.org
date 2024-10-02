@@ -65,6 +65,12 @@ And I also want to be able to easily open this file, so I'll write a little keyb
   				  (interactive)
   				  (find-file (concat (getenv "HOME") "/.emacs.d/init.org"))))
 #+end_src
+
+Also, I'm not too familiar with emacs lisp regular expressions, so ~re-builder~ is a must.
+#+begin_src elisp
+  (require 're-builder)
+  (setq reb-re-syntax 'rx)
+#+end_src
 ** Scheme
 I'll probably just be using GNU Guile, and maybe MIT if SICP needs it.
 Since chicken compiles to C, it may be able to be ran on an arduino, so I'm going to include that.
@@ -157,9 +163,13 @@ Very simple, basically just enabling magit.
 ** Agenda
 I'm okay for the agenda to be sweeping through everything in the ~org~ directory, because then I can just throw any old file in there, and have it show up on my agenda.
 That being said, there are a set of org files that are written to by the capture system. These live in a subdirectory called ~Agenda~, which exists for things that I don't really edit by hand.
+I'm using a ~rx~ regular expression here, because I want a better idea of how they work.
 #+begin_src elisp
   (setq org-directory (concat (getenv "HOME") "/Documents/Org")
-        org-agenda-files (directory-files-recursively org-directory "^[a-z\-]+.org$"))
+        org-agenda-files (directory-files-recursively org-directory
+  						    (rx bol
+  							(one-or-more (or lower-case ?-))
+  							".org" eol)))
 
   (global-set-key (kbd "C-c a") 'org-agenda)
 #+end_src
