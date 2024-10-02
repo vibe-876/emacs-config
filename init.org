@@ -82,6 +82,8 @@ Now, we configre individual Schemes.
     (setq geiser-chicken-binary "/sbin/chicken-csi"))
 #+end_src
 ** Haskell
+So we want Haskell, because it is cool.
+We make sure to add ghcup's binaries to the path, and add some keybindings so that Haskell can easily be compiled.
 #+begin_src elisp
   (use-package haskell-mode
     :ensure t
@@ -95,6 +97,8 @@ Now, we configre individual Schemes.
       (add-to-list 'exec-path cam-ghcup-path)))
 #+end_src
 ** Rust
+Much like Haskell, we add cargo's binaries to the path.
+I should probably put this into the ~use-package~ for ~rust-mode~, but that's a task for future Cam...
 #+begin_src elisp
   (setenv "PATH" (concat (getenv "PATH")
                          ":"
@@ -102,8 +106,10 @@ Now, we configre individual Schemes.
 
   (add-to-list 'exec-path (concat (getenv "HOME")
                                   "/.cargo/bin"))
+#+end_src
 
-
+And then we just use ~use-package~ to setup ~rust-mode~ and ~rustic~.
+#+begin_src elisp
   (use-package rust-mode
     :ensure t
     :defer t)
@@ -136,6 +142,7 @@ And for fun.
     :defer nil)
 #+end_src
 ** Magit
+Very simple, basically just enabling magit.
 #+begin_src elisp
   (use-package magit
     :ensure t
@@ -191,6 +198,7 @@ And give it a little keybinding.
   (global-set-key (kbd "C-c c") 'org-capture)
 #+end_src
 ** Org Rice
+I wouldn't try to understand this if I were you -- this is the only bit of my config that I didn't hand-write, and instead copied off of a website. I'll link it when I find it again.
 #+begin_src elisp
   (require 'org-bullets)
 
@@ -275,6 +283,7 @@ And also a keybinding for my favourite channel (defcon, at soma fm).
   				  (eradio-play "https://somafm.com/defcon256.pls")))
 #+end_src
 ** Elfeed
+RSS is a good way to keep up with news, so we want to use elfeed to do that.
 #+begin_src elisp
   (use-package elfeed
     :defer t
@@ -283,7 +292,6 @@ And also a keybinding for my favourite channel (defcon, at soma fm).
     (setq elfeed-feeds
           '(("https://planet.emacslife.com/atom.xml" blog emacs)
             ("https://summeremacs.github.io/posts/index.xml" blog emacs)
-  ;          ("https://planet.haskell.org/rss20.xml" programming haskell tech)
             ("https://xkcd.com/rss.xml" comic)
             ("https://www.smbc-comics.com/comic/rss" comic)
             ("https://www.monkeyuser.com/index.xml" comic)
@@ -303,13 +311,6 @@ And also a keybinding for my favourite channel (defcon, at soma fm).
 ** Themes
 Dracula (obviously)
 #+begin_src elisp
-  ;; (use-package arc-dark-theme
-  ;;   :ensure t
-  ;;   :straight (:host github :repo "cfraz89/arc-dark-theme")
-  ;;   :config
-  ;;   (load-theme 'arc-dark t))
-
-  ;; ;;(load-theme 'dracula t)
   (load-theme 'dracula t)
 #+end_src
 
@@ -319,6 +320,7 @@ And for some transparency
   (add-to-list 'default-frame-alist '(alpha . (90 . 50)))
 #+end_src
 ** Misc
+Misc things to make emacs just that bit more pretty.
 #+begin_src elisp
   (setq inhibit-startup-message t)
   (tool-bar-mode -1)
@@ -361,6 +363,7 @@ I want to have easy key bindings, so this goes below.
 #+end_src
 * Writing
 ** SPAG
+This is /very/ useful when writing, from org mode, to program comments.
 #+begin_src elisp
   (setq ispell-program-name "hunspell")
   (global-set-key (kbd "M-£") 'ispell-region)
