@@ -177,9 +177,9 @@ We also want to add a capture template for capturing things.
 Because of reasons I do not know, I have to declare these variables, instead of doing the ~concat~ thing inline.
 #+begin_src elisp
   (setq org-agenda-directory (concat org-directory "/Agenda")
-        org-agenda-work-file (concat org-agenda-directory "work.org")
-        org-agenda-social-file (concat org-agenda-directory "social.org")
-        org-agenda-personal-file (concat org-agenda-directory "personal.org"))
+        org-agenda-work-file (concat org-agenda-directory "/work.org")
+        org-agenda-social-file (concat org-agenda-directory "/social.org")
+        org-agenda-personal-file (concat org-agenda-directory "/personal.org"))
 #+end_src
 
 And here we use those variables to actually do things.
