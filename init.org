@@ -27,9 +27,7 @@ Also, we can set ~use-package~ to defer by default (as that is my default for pa
 I want a macro to simplify the creation of a regular expression to describe a file extention, mostly used for programming langauges, because it is a pain to type it out by hand each time I'm configuring a new language.
 #+begin_src elisp
   (defmacro my/file-extension-regex (file-extension)
-    (list 'rx 'bol
-  	(list 'one-or-more 'any)
-  	?. file-extension 'eol))
+    (list 'concat "\\." file-extension "$"))
 #+end_src
 * Programming
 ** Emacs Lisp
