@@ -5,7 +5,8 @@
 #+author:  Camilla A.
 
 
-* Packages
+* Packages, Procedures, and Macros
+** Packages
 This is actually really simple, but it needs to be at the top.
 This is because it is loading packages, which /everything/ else may be dependant on.
 #+begin_src elisp
@@ -19,6 +20,16 @@ Also, we can set ~use-package~ to defer by default (as that is my default for pa
 #+begin_src elisp
   (setq use-package-always-ensure t
         use-package-always-defer t)
+#+end_src
+
+** Procedures
+** Macros
+I want a macro to simplify the creation of a regular expression to describe a file extention, mostly used for programming langauges, because it is a pain to type it out by hand each time I'm configuring a new language.
+#+begin_src elisp
+  (defmacro my/file-extension-regex (file-extension)
+    (list 'rx 'bol
+  	(list 'one-or-more 'any)
+  	?. file-extension 'eol))
 #+end_src
 * Programming
 ** Emacs Lisp
@@ -124,27 +135,32 @@ I should probably put this into the ~use-package~ for ~rust-mode~, but that's a 
 #+end_src
 
 And then we just use ~use-package~ to setup ~rust-mode~ and ~rustic~.
+I'm in the process of trying to get a macro working so that adding new file-types is easy, but that's still a work in progress (which is why there's a redundant ~let~ in there)...
 #+begin_src elisp
   (use-package rust-mode
     :ensure t)
 
   (use-package rustic
     :ensure t
-    :mode ("\\.rs$" . rustic-mode)
     :config
     (setq rustic-format-on-save nil
           rustic-lsp-client 'lsp-mode)
+    (let (rust-file-extension (my/file-extension-regex "rs"))
+      (add-to-list 'auto-mode-alist '("^.+\\.rs$" . rustic-mode)))
+    
     :custom
     (rustic-cargo-use-last-stored-arguments t)
-    (rustic-analyzer-command '("rustup" "run" "stable" "rust-analyzer")))
+    (rustic-analyzer-command '("rustup" "run" "stable" "rust-analyzer"))
+
+    :after (rust-mode))
 #+end_src
 ** Arduino
-For Uni stuff...
+For Uni stuff, which requires me to use an arduino.
 #+begin_src elisp
   (use-package arduino-mode
     :ensure t
     :config
-    (add-to-list 'auto-mode-alist '("\\.ino$" . arduino-mode)))
+    (add-to-list 'auto-mode-alist '("^.+\\.ino$" . arduino-mode)))
 #+end_src
 
 And for fun.
