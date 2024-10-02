@@ -283,7 +283,7 @@ And also a keybinding for my favourite channel (defcon, at soma fm).
     (setq elfeed-feeds
           '(("https://planet.emacslife.com/atom.xml" blog emacs)
             ("https://summeremacs.github.io/posts/index.xml" blog emacs)
-            ("https://planet.haskell.org/rss20.xml" programming haskell tech)
+  ;          ("https://planet.haskell.org/rss20.xml" programming haskell tech)
             ("https://xkcd.com/rss.xml" comic)
             ("https://www.smbc-comics.com/comic/rss" comic)
             ("https://www.monkeyuser.com/index.xml" comic)
