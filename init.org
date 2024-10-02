@@ -19,7 +19,6 @@ This is because it is loading packages, which /everything/ else may be dependant
   (require 'package)
   (add-to-list 'package-archives
                '("melpa" . "http://melpa.org/packages/") t)
-
 #+end_src
 
 Also, we can set ~use-package~ to defer by default (as that is my default for packages), saving some extra keystrokes for package configuration.
@@ -28,9 +27,9 @@ Also, we can set ~use-package~ to defer by default (as that is my default for pa
         use-package-always-defer t)
 #+end_src
 
-We should also list *all* installed packages, done below. These are the packages that will not be auto-removed when ~M-x package-autoremove~ is called..
+We should also list *all* installed packages, done below. These are the packages that will not be auto-removed when ~M-x package-autoremove~ is called.
 #+begin_src elisp
-  (add-to-list 'package-selected-packages '(lsp-mode treemacs focus yaml pkg-info auctex which-key dracula-theme elfeed emms eradio geiser geiser-guile geiser-chicken haskell-mode casual-agenda casual-avy casual-dired casual-info magit org-bullets org-ref org-roam org-superstar paredit poker rainbow-delimiters rustic sly ulisp-repl use-package ace-window avy academic-phrases arduino-mode 2048-game bui dap-mode casual 0blayout))
+  (add-to-list 'package-selected-packages '(lsp-mode treemacs focus yaml pkg-info auctex which-key dracula-theme elfeed emms eradio geiser geiser-guile geiser-chicken haskell-mode casual-agenda casual-avy casual-dired casual-info magit org-bullets org-ref org-roam org-superstar paredit poker rainbow-delimiters rustic ulisp-repl use-package ace-window avy academic-phrases arduino-mode 2048-game bui dap-mode casual 0blayout))
 #+end_src
 * Procedures, and Macros
 ** Procedures
@@ -440,6 +439,12 @@ I want to have easy key bindings, so this goes below.
     :defer nil
     :config
     (which-key-mode))
+#+end_src
+** Games
+We all love some games, every now and again.
+#+begin_src elisp
+  (use-package poker)
+  (use-package 2048-game)
 #+end_src
 * Writing
 ** SPAG
