@@ -150,11 +150,11 @@ Very simple, basically just enabling magit.
 #+end_src
 * Org
 ** Agenda
-For my sanity...
+I'm okay for the agenda to be sweeping through everything in the ~org~ directory, because then I can just throw any old file in there, and have it show up on my agenda.
+That being said, there are a set of org files that are written to by the capture system. These live in a subdirectory called ~Agenda~, which exists for things that I don't really edit by hand.
 #+begin_src elisp
   (setq org-directory (concat (getenv "HOME") "/Documents/Org")
-        org-agenda-directory (concat org-directory "/Agenda/")
-        org-agenda-files (directory-files-recursively org-agenda-directory "^[a-z\-]+.org$"))
+        org-agenda-files (directory-files-recursively org-directory "^[a-z\-]+.org$"))
 
   (global-set-key (kbd "C-c a") 'org-agenda)
 #+end_src
@@ -176,7 +176,8 @@ For the clock, we want to enable persistence across sessions, as described in th
 We also want to add a capture template for capturing things.
 Because of reasons I do not know, I have to declare these variables, instead of doing the ~concat~ thing inline.
 #+begin_src elisp
-  (setq org-agenda-work-file (concat org-agenda-directory "work.org")
+  (setq org-agenda-directory (concat org-directory "/Agenda")
+        org-agenda-work-file (concat org-agenda-directory "work.org")
         org-agenda-social-file (concat org-agenda-directory "social.org")
         org-agenda-personal-file (concat org-agenda-directory "personal.org"))
 #+end_src
