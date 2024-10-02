@@ -46,6 +46,7 @@ Also, a function to tangle and load my ~init.org~ file.
 
 Remove the stuff from ~*scratch*~
 #+begin_src elisp
+  (setq inhibit-startup-message t)
   (setq initial-scratch-message "")
 #+end_src
 
@@ -322,7 +323,6 @@ And for some transparency
 ** Misc
 Misc things to make emacs just that bit more pretty.
 #+begin_src elisp
-  (setq inhibit-startup-message t)
   (tool-bar-mode -1)
   (menu-bar-mode -1)
   (scroll-bar-mode -1)
@@ -337,8 +337,12 @@ Misc things to make emacs just that bit more pretty.
   (setq dired-vc-rename-file t
         dired-kill-when-opening-new-dired-buffer t)
 
-  (add-hook 'dired-mode-hook (lambda () (dired-hide-details-mode 1)))
-  (add-hook 'dired-mode-hook (lambda () (dired-omit-mode 1)))
+
+  (add-hook 'dired-mode-hook (lambda nil
+  			     (dired-hide-details-mode 1)))
+
+  (add-hook 'dired-mode-hook (lambda nil
+  			     (dired-omit-mode 1)))
 
 
   (use-package which-key
