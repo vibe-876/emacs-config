@@ -39,6 +39,10 @@ This is just a bit of space I've put down for random procedures that I want.
 I want a macro to simplify the creation of a regular expression to describe a file extention, mostly used for programming langauges, because it is a pain to type it out by hand each time I'm configuring a new language.
 #+begin_src elisp
   (defmacro my/file-extension-regex (extension mode)
+    "Creates a cons cell, where the car is a regex for
+  some given file extension, and the cdr is some mode.
+
+  This is meant to be used in the `auto-mode-alist'. "
     `(cons (concat "\\." ,extension "$") ,mode))
 #+end_src
 * Programming
