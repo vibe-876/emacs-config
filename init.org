@@ -239,6 +239,40 @@ And give it a little keybinding.
 #+begin_src elisp
   (global-set-key (kbd "C-c c") 'org-capture)
 #+end_src
+
+But we can go further with the keybindings...
+Prot recently released [[https://protesilaos.com/codelog/2024-09-19-emacs-command-popup-frame-emacsclient/][a bit of emacs lisp]], that allows for functions to be called interactively from /outside/ of emacs, including ~org-capture~.
+This is really cool -- I recommend watching the video he made for it, as it gives a very good overview of the code.
+#+begin_src elisp
+  (defun prot-window-delete-popup-frame (&rest _)
+    "Kill selected selected frame if it has parameter `prot-window-popup-frame'.
+  Use this function via a hook."
+    (when (frame-parameter nil 'prot-window-popup-frame)
+      (delete-frame)))
+
+  (defmacro prot-window-define-with-popup-frame (command)
+    "Define interactive function which calls COMMAND in a new frame.
+  Make the new frame have the `prot-window-popup-frame' parameter."
+    `(defun ,(intern (format "prot-window-popup-%s" command)) ()
+       ,(format "Run `%s' in a popup frame with `prot-window-popup-frame' parameter.
+  Also see `prot-window-delete-popup-frame'." command)
+       (interactive)
+       (let ((frame (make-frame '((prot-window-popup-frame . t)))))
+         (select-frame frame)
+         (switch-to-buffer " prot-window-hidden-buffer-for-popup-frame")
+         (condition-case nil
+             (call-interactively ',command)
+           ((quit error user-error)
+            (delete-frame frame))))))
+
+  (declare-function org-capture "org-capture" (&optional goto keys))
+  (defvar org-capture-after-finalize-hook)
+
+
+  (prot-window-define-with-popup-frame org-capture)
+  (add-hook 'org-capture-after-finalize-hook #'prot-window-delete-popup-frame)
+#+end_src
+I've not used the bit of code for ~tmr~ that he included, because I don't use it, but I might try it at some point...
 ** Babel
 First, so that babel can support arduino code, we want to load ~org-contrib~ (commented for now, because I may be able to implement it myself...).
 #+begin_src elisp
