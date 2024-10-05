@@ -34,6 +34,7 @@ We should also list *all* installed packages, done below. These are the packages
 * Procedures, and Macros
 ** Procedures
 Nothing in here for now...
+This is just a bit of space I've put down for random procedures that I want.
 ** Macros
 I want a macro to simplify the creation of a regular expression to describe a file extention, mostly used for programming langauges, because it is a pain to type it out by hand each time I'm configuring a new language.
 #+begin_src elisp
@@ -155,7 +156,7 @@ I'm in the process of trying to get a macro working so that adding new file-type
     (setq rustic-format-on-save nil
           rustic-lsp-client 'lsp-mode)
     (let (rust-file-extension (my/file-extension-regex "rs"))
-      (add-to-list 'auto-mode-alist '("^.+\\.rs$" . rustic-mode)))
+      (add-to-list 'auto-mode-alist (my/file-extension-regex "rs" 'rustic-mode)))
     
     :custom
     (rustic-cargo-use-last-stored-arguments t)
@@ -169,7 +170,7 @@ For Uni stuff, which requires me to use an arduino.
   (use-package arduino-mode
     :ensure t
     :config
-    (add-to-list 'auto-mode-alist '("^.+\\.ino$" . arduino-mode)))
+    (add-to-list 'auto-mode-alist (my/file-extension-regex "ino" 'arduino-mode)))
 #+end_src
 
 And for fun.
