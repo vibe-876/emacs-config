@@ -42,7 +42,7 @@ I want a macro to simplify the creation of a regular expression to describe a fi
     "Creates a cons cell, where the car is a regex for
   some given file extension, and the cdr is some mode.
 
-  This is meant to be used in the `auto-mode-alist'. "
+  This is meant to be used in the `auto-mode-alist'."
     `(cons (concat "\\." ,extension "$") ,mode))
 #+end_src
 * Programming
@@ -61,9 +61,9 @@ Also, a function to tangle and load my ~init.org~ file, and bind it to ~M-p M-s~
   (defun my/load-init (&optional config-dir config-file output-file)
     "Tangle and reload ~/.emacs.d/init.org, because it is a pain to do it manually.
 
-  If a different file is used as a config, then arguments can be passed. config-dir
-  is the directory that my/load-init will assume the config files live in, config-file
-  is the literate org file that is to be tangled, and output-file is the emacs lisp
+  If a different file is used as a config, then arguments can be passed. CONFIG-DIR
+  is the directory that my/load-init will assume the config files live in, CONFIG-FILE
+  is the literate org file that is to be tangled, and OUTPUT-FILE is the emacs lisp
   file that will be tangled to, and then loaded."
     (interactive)
     (when (equal nil config-dir) (setq config-dir (concat (getenv "HOME") "/.emacs.d")))
@@ -354,6 +354,11 @@ We set the full name, and a username, alonside some other variables.
 
   (global-set-key (kbd "M-p e") 'erc-tls)
 #+end_src
+** Elpher
+Elpher is a gopher/gemini browser which I woud like to play with.
+#+begin_src elisp
+  (use-package elpher)
+#+end_src
 ** Eradio
 Some lovely music for while doing things, in a FLOSS manner :) .
 #+begin_src elisp
@@ -399,6 +404,7 @@ RSS is a good way to keep up with news, so we want to use elfeed to do that.
             ("https://archlinux.org/feeds/news/" arch linux tech)
             ("https://www.theregister.com/security/cyber_crime/headlines.atom" tech security news)
             ("https://www.theregister.com/on_prem/hpc/headlines.atom" tech hpc news)
+  ;	  ("gemini://geminiprotocol.net/news/atom.xml" gemini tech) ;; Doesn't work at the moment
             ("https://www.youtube.com/feeds/videos.xml?channel_id=UCtEb98_ptdXj6N6woTfgxVQ" blog video trans) ;; Icky
             ("https://www.youtube.com/feeds/videos.xml?channel_id=UC3_kehZbfRz-KrjXIqeIiPw" blog video trans) ;; Leadhead
             ("https://www.youtube.com/feeds/videos.xml?channel_id=UCzfyYtgvkx5mLy8nlLlayYg" video show)       ;; Helluva Boss
