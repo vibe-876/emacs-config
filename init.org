@@ -37,11 +37,9 @@ Nothing in here for now...
 ** Macros
 I want a macro to simplify the creation of a regular expression to describe a file extention, mostly used for programming langauges, because it is a pain to type it out by hand each time I'm configuring a new language.
 #+begin_src elisp
-  (defmacro my/file-extension-regex (file-extension)
-    (list 'concat "\\." file-extension "$"))
+  (defmacro my/file-extension-regex (extension mode)
+    `(cons (concat "\\." ,extension "$") ,mode))
 #+end_src
-
-I do want another macro, that can do the full thing (ie ~(my/new-prog-lang "ino" 'arduino-mode)~ => ~("\\.ino$" . arduino-mode)~, but I can't figure out how to do that, so that's for later.
 * Programming
 ** Emacs Lisp
 This adds:
