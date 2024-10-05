@@ -426,6 +426,16 @@ We all love some games, every now and again.
   (use-package poker)
   (use-package 2048-game)
 #+end_src
+** Server
+We want to have emacs start a server, if one has not already been started.
+#+begin_src elisp
+  (use-package server
+    :ensure nil
+    :demand t
+    :config
+    (unless (server-running-p)
+      (server-start)))
+#+end_src
 ** Misc
 Misc things to make emacs just that bit more pretty.
 #+begin_src elisp
@@ -476,6 +486,12 @@ This is /very/ useful when writing, from org mode, to program comments.
 #+begin_src elisp
   (setq ispell-program-name "hunspell")
   (global-set-key (kbd "M-£") 'ispell-region)
+#+end_src
+** Focus Mode
+Focus mode is sometimes useful, useful enough to get a keybinding.
+#+begin_src elisp
+  (use-package focus
+    :bind ("M-p C-f" . focus-mode))
 #+end_src
 * Final Stuff
 And now finally, we change the garbage collector back.
