@@ -514,6 +514,13 @@ I want to have easy key bindings, so this goes below.
     :config
     (which-key-mode))
 #+end_src
+
+And a little hello for when emacs finishes loading.
+#+begin_src elisp
+  (defun display-startup-echo-area-message nil
+    "I don't want gnu's stuff at startup, I want my stuff."
+    (message "Hello Cam :) ."))
+#+end_src
 * Writing
 ** SPAG
 This is /very/ useful when writing, from org mode, to program comments.
