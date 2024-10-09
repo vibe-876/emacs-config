@@ -175,7 +175,10 @@ Okay, so first we need a procedure to compile and load the arduino code.
     "Just compiles and then loads an arduino sketch.
   Meant to be used alongside `serial-term'.
 
-  Defaults to an arduino uno, because that's what I use."
+  Defaults to an arduino uno, because that's what I use.
+
+  If a serial connection is already open inside emacs for the
+  port that we want to connect to, it kills that buffer."
     (interactive)
     (when (equal board-name nil) (setq board-name "arduino:avr:uno"))
     (when (equal board-port nil) (setq board-port "/dev/ttyACM0"))
@@ -185,6 +188,9 @@ Okay, so first we need a procedure to compile and load the arduino code.
     (let ((arduino-buffer "*arduino-logs*"))
       (get-buffer arduino-buffer)
       (switch-to-buffer-other-window arduino-buffer)
+
+      (when (not (equal (get-buffer board-port) nil))
+        (kill-buffer board-port))
       
       (start-process "arduino-compiling-stuff" arduino-buffer "arduino-cli" "compile" "--fqbn" board-name path-to-root)
       (start-process "arduino-loading-stuff" arduino-buffer "arduino-cli" "upload" "--port" board-port "--fqbn" board-name path-to-root)
