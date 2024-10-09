@@ -169,10 +169,35 @@ I'm in the process of trying to get a macro working so that adding new file-type
     :after (rust-mode))
 #+end_src
 ** Arduino
+Okay, so first we need a procedure to compile and load the arduino code.
+#+begin_src elisp
+  (defun my/arduino-compile-and-load (&optional board-name board-port path-to-root)
+    "Just compiles and then loads an arduino sketch.
+  Meant to be used alongside `serial-term'.
+
+  Defaults to an arduino uno, because that's what I use."
+    (interactive)
+    (when (equal board-name nil) (setq board-name "arduino:avr:uno"))
+    (when (equal board-port nil) (setq board-port "/dev/ttyACM0"))
+    (when (equal path-to-root nil) (setq path-to-root "."))
+
+    
+    (let ((arduino-buffer "*arduino-logs*"))
+      (get-buffer arduino-buffer)
+      (switch-to-buffer-other-window arduino-buffer)
+      
+      (start-process "arduino-compiling-stuff" arduino-buffer "arduino-cli" "compile" "--fqbn" board-name path-to-root)
+      (start-process "arduino-loading-stuff" arduino-buffer "arduino-cli" "upload" "--port" board-port "--fqbn" board-name path-to-root)
+
+      (serial-term board-port 9600)
+      (switch-to-buffer board-port)))
+#+end_src
+
 For Uni stuff, which requires me to use an arduino.
 #+begin_src elisp
   (use-package arduino-mode
     :ensure t
+    :bind (("C-c M-c" . my/arduino-compile-and-load))
     :config
     (add-to-list 'auto-mode-alist (my/file-extension-regex "ino" 'arduino-mode)))
 #+end_src
@@ -297,6 +322,19 @@ Remove the useless stuff from the bottom of org to html exports.
   (setq org-html-validation-link nil
         org-export-with-author nil
         org-export-with-toc nil)
+#+end_src
+** Website Exporting
+For the sake of my website (and maybe gopher hole in future), I want to be able to convert org to html, with a bit of css sprinkled in.
+#+begin_src elisp
+  ;; (require 'ox-publish)
+
+  ;; (setq org-publish-project-alist
+  ;;       (list
+  ;;        (list "my-org-site"
+  ;; 	     :recursive t
+  ;; 	     :base-directory "./content"
+  ;; 	     :publishing-directory "./public"
+  ;; 	     :publishing-function 'org-html-publish-to-html)))
 #+end_src
 ** Org Rice
 I wouldn't try to understand this if I were you -- this is the only bit of my config that I didn't hand-write, and instead copied off of a website. I'll link it when I find it again.
