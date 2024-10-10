@@ -191,9 +191,14 @@ Okay, so first we need a procedure to compile and load the arduino code.
 
       (when (not (equal (get-buffer board-port) nil))
         (kill-buffer board-port))
-      
-      (start-process "arduino-compiling-stuff" arduino-buffer "arduino-cli" "compile" "--fqbn" board-name path-to-root)
-      (start-process "arduino-loading-stuff" arduino-buffer "arduino-cli" "upload" "--port" board-port "--fqbn" board-name path-to-root)
+
+      (call-process "arduino-cli" nil arduino-buffer t "compile"
+  		  "--fqbn" board-name
+  		  path-to-root)
+      (call-process "arduino-cli" nil arduino-buffer t "upload"
+  		  "--port" board-port
+  		  "--fqbn" board-name
+  		  path-to-root)
 
       (serial-term board-port 9600)
       (switch-to-buffer board-port)))
