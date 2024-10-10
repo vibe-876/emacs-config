@@ -74,9 +74,9 @@ Also, a function to tangle and load my ~init.org~ file, and bind it to ~M-p M-s~
   is the literate org file that is to be tangled, and OUTPUT-FILE is the emacs lisp
   file that will be tangled to, and then loaded."
     (interactive)
-    (when (equal nil config-dir) (setq config-dir (concat (getenv "HOME") "/.emacs.d")))
-    (when (equal nil config-file) (setq config-file "/init.org"))
-    (when (equal nil output-file) (setq output-file "/init.el"))
+    (my/default-value config-dir (concat (getenv "HOME") "/.emacs.d"))
+    (my/default-value config-file "/init.org")
+    (my/default-value output-file "/init.el")
     
     (save-buffer (concat config-dir config-file))
     (org-babel-tangle nil (concat config-dir config-file))
@@ -187,10 +187,9 @@ Okay, so first we need a procedure to compile and load the arduino code.
   If a serial connection is already open inside emacs for the
   port that we want to connect to, it kills that buffer."
     (interactive)
-    (when (equal board-name nil) (setq board-name "arduino:avr:uno"))
-    (when (equal board-port nil) (setq board-port "/dev/ttyACM0"))
-    (when (equal path-to-root nil) (setq path-to-root "."))
-
+    (my/default-value board-name "arduino:avr:uno")
+    (my/default-value board-port "/dev/ttyACM0")
+    (my/default-value path-to-root ".")
     
     (let ((arduino-buffer "*arduino-logs*"))
       (get-buffer arduino-buffer)
