@@ -323,19 +323,6 @@ Remove the useless stuff from the bottom of org to html exports.
         org-export-with-author nil
         org-export-with-toc nil)
 #+end_src
-** Website Exporting
-For the sake of my website (and maybe gopher hole in future), I want to be able to convert org to html, with a bit of css sprinkled in.
-#+begin_src elisp
-  ;; (require 'ox-publish)
-
-  ;; (setq org-publish-project-alist
-  ;;       (list
-  ;;        (list "my-org-site"
-  ;; 	     :recursive t
-  ;; 	     :base-directory "./content"
-  ;; 	     :publishing-directory "./public"
-  ;; 	     :publishing-function 'org-html-publish-to-html)))
-#+end_src
 ** Org Rice
 I wouldn't try to understand this if I were you -- this is the only bit of my config that I didn't hand-write, and instead copied off of a website. I'll link it when I find it again.
 #+begin_src elisp
