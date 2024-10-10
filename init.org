@@ -213,16 +213,29 @@ Okay, so first we need a procedure to compile and load the arduino code.
 
 I also want a procedure that allows me to simply see if the arduino program will compile properly.
 #+begin_src elisp
-  ;; (defun my/does-arduino-program-work (&optional board-name path-to-root)
-  ;;   "Tries to compile the program, and will
-  ;; whine if it doesn't."
-  ;;   (when (equal )))
+  (defun my/does-arduino-program-work (&optional board-name path-to-root)
+    "Tries to compile the program, and will
+  whine if it doesn't.
+
+  It'll tell you if it works or not in the
+  minibuffer."
+    (interactive)
+    (my/default-value board-name "arduino:avr:uno")
+    (my/default-value path-to-root ".")
+
+    (if (equal 1 (call-process "arduino-cli" nil "*arduino-logs*" t
+  			     "compile"
+  			     "--fqbn" board-name
+  			     path-to-root))
+        (message "Something went wrong :( .")
+      (message "Yeah, it works :) .")))
 #+end_src
 For Uni stuff, which requires me to use an arduino.
 #+begin_src elisp
   (use-package arduino-mode
     :ensure t
-    :bind (("C-c M-c" . my/arduino-compile-and-load))
+    :bind (("C-c M-c" . my/arduino-compile-and-load)
+  	 ("C-c M-t" . my/does-arduino-program-work))
     :config
     (add-to-list 'auto-mode-alist (my/file-extension-regex "ino" 'arduino-mode)))
 #+end_src
