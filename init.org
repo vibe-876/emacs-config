@@ -98,14 +98,13 @@ Also, I'm not too familiar with emacs lisp regular expressions, so ~re-builder~ 
 #+end_src
 ** Scheme
 I'll probably just be using GNU Guile, and maybe MIT if SICP needs it.
-Since chicken compiles to C, it may be able to be ran on an arduino, so I'm going to include that.
 
 We start by getting ~Geiser~.
 #+begin_src elisp
   (use-package geiser
     :defer nil
     :config
-    (setq geiser-active-implementations '(guile chicken))
+    (setq geiser-active-implementations '(guile))
     :hook ((scheme-mode . rainbow-delimiters-mode)
   	 (scheme-mode . enable-paredit-mode)))
 #+end_src
