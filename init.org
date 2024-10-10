@@ -45,6 +45,14 @@ I want a macro to simplify the creation of a regular expression to describe a fi
   This is meant to be used in the `auto-mode-alist'."
     `(cons (concat "\\." ,extension "$") ,mode))
 #+end_src
+
+I also want a macro so that I can set defaults for optional arguments to procedures.
+#+begin_src elisp
+  (defmacro my/default-value (value default)
+    "Just a little macro to make optional arguments
+  to procedures a little easier to read."
+    `(when (equal ,value nil) (setq ,value ,default)))
+#+end_src
 * Programming
 ** Emacs Lisp
 This adds:
@@ -203,6 +211,13 @@ Okay, so first we need a procedure to compile and load the arduino code.
       (switch-to-buffer board-port)))
 #+end_src
 
+I also want a procedure that allows me to simply see if the arduino program will compile properly.
+#+begin_src elisp
+  ;; (defun my/does-arduino-program-work (&optional board-name path-to-root)
+  ;;   "Tries to compile the program, and will
+  ;; whine if it doesn't."
+  ;;   (when (equal )))
+#+end_src
 For Uni stuff, which requires me to use an arduino.
 #+begin_src elisp
   (use-package arduino-mode
