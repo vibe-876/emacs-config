@@ -308,12 +308,6 @@ This is really cool -- I recommend watching the video he made for it, as it give
 #+end_src
 I've not used the bit of code for ~tmr~ that he included, because I don't use it, but I might try it at some point...
 ** Babel
-First, so that babel can support arduino code, we want to load ~org-contrib~ (commented for now, because I may be able to implement it myself...).
-#+begin_src elisp
-  ;; (use-package org-contrib
-  ;;   :ensure t)
-#+end_src
-
 I don't know if I can do multiple things inside ~add-to-list~, in the same way that you can do with ~setq~, which I'll check later.
 For now, this will do.
 #+begin_src elisp
