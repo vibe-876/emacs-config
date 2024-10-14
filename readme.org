@@ -7,7 +7,7 @@ The programming is guess what: the programming thing.
 This is just my emacs config file, nothing special.
 
 To evaluate it, just run: ~C-x C-s~, ~C-c C-v t~, and finally, ~M-x load-file <return> $HOME/.emacs.d/init.el~ (or wherever you saved it to).
-After that, you can just do ~C-c M-p~ to open the config, and ~M-x my/load-init~ to reload it.
+After that, you can just do ~C-c M-p~ to open the config, and ~M-x my/load-init~ to reload it, or you can just type ~M-p M-s~.
 
 * Why Is This On Github
 Backup. If you want to run it, run it, but you're on your own if it breaks your system (although I see no reason why it would)...
