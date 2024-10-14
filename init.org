@@ -143,23 +143,16 @@ We make sure to add ghcup's binaries to the path, and add some keybindings so th
 #+end_src
 ** Rust
 Much like Haskell, we add cargo's binaries to the path.
-I should probably put this into the ~use-package~ for ~rust-mode~, but that's a task for future Cam...
-#+begin_src elisp
-  (setq cargo-path (concat (getenv "HOME")
-  			 "/.cargo/bin"))
-
-  (setenv "PATH" (concat (getenv "PATH")
-                         ":"
-                         cargo-path))
-
-  (add-to-list 'exec-path cargo-path)
-#+end_src
-
-And then we just use ~use-package~ to setup ~rust-mode~ and ~rustic~.
-I'm in the process of trying to get a macro working so that adding new file-types is easy, but that's still a work in progress (which is why there's a redundant ~let~ in there)...
+And then we just use ~use-package~ to setup that, alongside ~rust-mode~ and ~rustic~.
 #+begin_src elisp
   (use-package rust-mode
-    :ensure t)
+    :config
+    (setq cargo-path (concat (getenv "HOME")
+                             "./cargo/bin"))
+    (setenv "PATH" (concat (getenv "PATH")
+                           ":"
+                           cargo-path))
+    (add-to-list 'exec-path cargo-path))
 
   (use-package rustic
     :ensure t
@@ -168,7 +161,7 @@ I'm in the process of trying to get a macro working so that adding new file-type
           rustic-lsp-client 'lsp-mode)
     (let (rust-file-extension (my/file-extension-regex "rs"))
       (add-to-list 'auto-mode-alist (my/file-extension-regex "rs" 'rustic-mode)))
-    
+
     :custom
     (rustic-cargo-use-last-stored-arguments t)
     (rustic-analyzer-command '("rustup" "run" "stable" "rust-analyzer"))
@@ -229,6 +222,18 @@ I also want a procedure that allows me to simply see if the arduino program will
         (message "Something went wrong :( .")
       (message "Yeah, it works :) .")))
 #+end_src
+
+Furthermore, I want to be able to test whether it works, and to be able to compile it from within a literate org file.
+To do this, we define a macro.
+#+begin_src elisp
+  (defun my/test-arduino-from-org (&optional tangle-file)
+    "Bla bla bla faggot shit"
+    (interactive)
+    (my/default-value tangle-file (current-buffer))
+    
+    (org-babel-tangle nil (current-buffer)))
+#+end_src
+
 For Uni stuff, which requires me to use an arduino.
 #+begin_src elisp
   (use-package arduino-mode
@@ -237,13 +242,6 @@ For Uni stuff, which requires me to use an arduino.
   	 ("C-c M-t" . my/does-arduino-program-work))
     :config
     (add-to-list 'auto-mode-alist (my/file-extension-regex "ino" 'arduino-mode)))
-#+end_src
-
-And for fun.
-#+begin_src elisp
-  (use-package ulisp-repl
-    :ensure t
-    :defer nil)
 #+end_src
 ** Magit
 Very simple, basically just enabling magit.
