@@ -141,6 +141,25 @@ We make sure to add ghcup's binaries to the path, and add some keybindings so th
       (setenv "PATH" (concat (getenv "PATH") ":" cam-ghcup-path))
       (add-to-list 'exec-path cam-ghcup-path)))
 #+end_src
+
+Okay, so I want to be able to run literate haskell files like regular ones, because org mode is really cool.
+All that I need to do is tangle the file, and then I just need to load it into ~ghci~.
+That can't be that hard, can it?
+#+begin_src elisp
+  (defun my/haskell-load-literate-file nil
+    "Load a literate org file containing Haskell code
+  into ghci."
+    (interactive)
+    (let ((file-name (buffer-file-name))
+          (haskell-file (concat (file-name-sans-extension buffer-file-name) ".hs"))
+          (cabal-file "../*.cabal"))
+
+      (org-babel-tangle nil haskell-file)
+      (find-file cabal-file t)
+      (haskell-process-cabal-build)
+      (find-file (concat "app/" file-name))
+      (kill-buffer cabal-file)))
+#+end_src
 ** Rust
 Much like Haskell, we add cargo's binaries to the path.
 And then we just use ~use-package~ to setup that, alongside ~rust-mode~ and ~rustic~.
