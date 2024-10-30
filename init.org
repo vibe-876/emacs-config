@@ -216,10 +216,11 @@ I also want a procedure that allows me to simply see if the arduino program will
     (my/default-value path-to-root ".")
 
     (if (equal 1 (call-process "arduino-cli" nil "*arduino-logs*" t
-  			     "compile"
-  			     "--fqbn" board-name
-  			     path-to-root))
-        (message "Something went wrong :( .")
+                             "compile"
+                             "--fqbn" board-name
+                             path-to-root))
+        (switch-to-buffer-other-window "*arduino-logs*")
+
       (message "Yeah, it works :) .")))
 #+end_src
 
@@ -343,7 +344,7 @@ For now, this will do.
   (add-to-list 'org-structure-template-alist '("ll" . "src elisp"))
   (add-to-list 'org-structure-template-alist '("ls" . "src scheme"))
   (add-to-list 'org-structure-template-alist '("lh" . "src haskell"))
-  (add-to-list 'org-structure-template-alist '("la" . "src arduino"))
+  (add-to-list 'org-structure-template-alist '("la" . "src cpp")) ;; for arduino
 #+end_src
 ** Exporting
 Remove the useless stuff from the bottom of org to html exports.
