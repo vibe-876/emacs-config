@@ -145,6 +145,8 @@ We make sure to add ghcup's binaries to the path, and add some keybindings so th
 Okay, so I want to be able to run literate haskell files like regular ones, because org mode is really cool.
 All that I need to do is tangle the file, and then I just need to load it into ~ghci~.
 That can't be that hard, can it?
+
+One day, I will clean this up... One day...
 #+begin_src elisp
   (defun my/haskell-load-literate-file nil
     "Load a literate org file containing Haskell code
@@ -152,13 +154,30 @@ That can't be that hard, can it?
     (interactive)
     (let ((file-name (buffer-file-name))
           (haskell-file (concat (file-name-sans-extension buffer-file-name) ".hs"))
-          (cabal-file "../*.cabal"))
+          (cabal-file "../*.cabal")
+          (process-name (concat "*"
+                                (downcase
+                                 (file-name-sans-extension
+                                  (car
+                                   (cdr (split-string (car (file-expand-wildcards "../*.cabal"))
+                                                      "/")))))
+                                "*")))
 
       (org-babel-tangle nil haskell-file)
       (find-file cabal-file t)
       (haskell-process-cabal-build)
-      (find-file (concat "app/" file-name))
-      (kill-buffer cabal-file)))
+
+      (find-file haskell-file)
+      (haskell-process-load-file)
+      (haskell-interactive-mode-clear)
+      (kill-buffer haskell-file)
+
+      (find-file file-name)
+      (delete-other-windows)
+      (split-window-right)
+      (other-window 1)
+      (switch-to-buffer process-name)
+      (other-window 1)))
 #+end_src
 ** Rust
 Much like Haskell, we add cargo's binaries to the path.
