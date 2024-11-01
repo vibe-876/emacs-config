@@ -35,6 +35,16 @@ We should also list *all* installed packages, done below. These are the packages
 ** Procedures
 Nothing in here for now...
 This is just a bit of space I've put down for random procedures that I want.
+
+First, I want a procedure that can give me the final element of any list.
+#+begin_src elisp
+  (defun my/final-element (list)
+    "Takes a list, and returns the final
+  element."
+    (if (eq (cdr list) nil)
+        (car list)
+      (my/final-element (cdr list))))
+#+end_src
 ** Macros
 I want a macro to simplify the creation of a regular expression to describe a file extention, mostly used for programming langauges, because it is a pain to type it out by hand each time I'm configuring a new language.
 #+begin_src elisp
@@ -150,7 +160,11 @@ One day, I will clean this up... One day...
 #+begin_src elisp
   (defun my/haskell-load-literate-file nil
     "Load a literate org file containing Haskell code
-  into ghci."
+  into ghci.
+
+  I'll warn you now, this is a very messy implementation
+  of something that I have a feeling could be a lot more
+  simple."
     (interactive)
     (let ((file-name (buffer-file-name))
           (haskell-file (concat (file-name-sans-extension buffer-file-name) ".hs"))
@@ -170,14 +184,15 @@ One day, I will clean this up... One day...
       (find-file haskell-file)
       (haskell-process-load-file)
       (haskell-interactive-mode-clear)
-      (kill-buffer haskell-file)
+      (kill-buffer (my/final-element (split-string haskell-file "/")))
 
       (find-file file-name)
       (delete-other-windows)
       (split-window-right)
       (other-window 1)
       (switch-to-buffer process-name)
-      (other-window 1)))
+      (other-window 1)
+      (message "Done.")))
 #+end_src
 ** Rust
 Much like Haskell, we add cargo's binaries to the path.
