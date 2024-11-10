@@ -297,6 +297,11 @@ For Uni stuff, which requires me to use an arduino.
     :config
     (add-to-list 'auto-mode-alist (my/file-extension-regex "ino" 'arduino-mode)))
 #+end_src
+
+It might be worth trying to get ~M-x compile~ to work with arduino, so I'll give that a shot.
+#+begin_src elisp
+  
+#+end_src
 ** Magit
 Very simple, basically just enabling magit.
 #+begin_src elisp
