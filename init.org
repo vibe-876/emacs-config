@@ -15,10 +15,26 @@ Basically, ~gc-cons-threshold~ is simply how many bytes of data can be allocated
 ** Packages
 This is actually really simple, but it needs to be at the top.
 This is because it is loading packages, which /everything/ else may be dependant on.
+
+Using ~straight.el~ now.
 #+begin_src elisp
-  (require 'package)
-  (add-to-list 'package-archives
-               '("melpa" . "http://melpa.org/packages/") t)
+  (defvar bootstrap-version)
+  (let ((bootstrap-file
+         (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+        (bootstrap-version 6))
+    (unless (file-exists-p bootstrap-file)
+      (with-current-buffer
+          (url-retrieve-synchronously
+           "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+           'silent 'inhibit-cookies)
+        (goto-char (point-max))
+        (eval-print-last-sexp)))
+    (load bootstrap-file nil 'nomessage))
+
+  
+  ;; (require 'package)
+  ;; (add-to-list 'package-archives
+  ;;              '("melpa" . "http://melpa.org/packages/") t)
 #+end_src
 
 Also, we can set ~use-package~ to defer by default (as that is my default for packages), saving some extra keystrokes for package configuration.
@@ -193,6 +209,24 @@ One day, I will clean this up... One day...
       (switch-to-buffer process-name)
       (other-window 1)
       (message "Done.")))
+#+end_src
+** Lean
+Lean is really cool, and I want to be able to use it.
+#+begin_src elisp
+  (use-package lean4-mode
+    :straight (lean4-mode
+               :type git
+               :host github
+               :repo "leanprover/lean4-mode"
+               :files ("*.el" "data"))
+    :commands (lean4-mode)
+    :config
+    (add-to-list 'exec-path (concat (getenv "HOME")
+                                    ".elan/bin")))
+
+  (setenv "PATH" (concat (getenv "PATH") ":"
+                           (concat (getenv "HOME")
+                                   "/.elan/bin")))
 #+end_src
 ** Rust
 Much like Haskell, we add cargo's binaries to the path.
@@ -555,11 +589,11 @@ I'm willing to throw away ~goto-line~'s ~M-g g~ so that it can go towards ~casua
 ** Themes
 Dracula (obviously).
 #+begin_src elisp
-  (use-package dracula-theme
+  (use-package badger-theme
     :defer nil
     :ensure t
     :config
-    (load-theme 'dracula t))
+    (load-theme 'badger t))
 #+end_src
 
 And for some transparency
