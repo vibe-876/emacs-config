@@ -1,13 +1,28 @@
 (setq gc-cons-threshold (* 50 1000 1000))
 
-(require 'package)
-(add-to-list 'package-archives
-             '("melpa" . "http://melpa.org/packages/") t)
+(setq package-enable-at-startup nil)
+
+(defvar bootstrap-version)
+(let ((bootstrap-file
+       (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
+      (bootstrap-version 6))
+  (unless (file-exists-p bootstrap-file)
+    (with-current-buffer
+        (url-retrieve-synchronously
+         "https://raw.githubusercontent.com/radian-software/straight.el/develop/install.el"
+         'silent 'inhibit-cookies)
+      (goto-char (point-max))
+      (eval-print-last-sexp)))
+  (load bootstrap-file nil 'nomessage))
+
+;; (require 'package)
+;; (add-to-list 'package-archives
+;;              '("melpa" . "http://melpa.org/packages/") t)
 
 (setq use-package-always-ensure t
       use-package-always-defer t)
 
-(setq package-selected-packages '(lsp-mode treemacs focus yaml pkg-info auctex which-key dracula-theme elfeed emms eradio geiser geiser-guile geiser-chicken haskell-mode casual-agenda casual-avy casual-dired casual-info magit org-bullets org-ref org-roam org-superstar paredit poker rainbow-delimiters rustic ulisp-repl use-package ace-window avy academic-phrases arduino-mode 2048-game bui dap-mode casual 0blayout))
+(setq package-selected-packages '(lsp-mode treemacs focus yaml pkg-info auctex which-key dracula-theme elfeed emms eradio geiser geiser-guile geiser-chicken haskell-mode casual-agenda casual-avy casual-dired casual-info magit org-bullets org-ref org-roam org-superstar paredit poker rainbow-delimiters rustic ulisp-repl use-package ace-window avy academic-phrases arduino-mode 2048-game bui dap-mode casual 0blayout darcula-theme))
 
 (defun my/final-element (list)
   "Takes a list, and returns the final
@@ -121,6 +136,21 @@ simple."
     (other-window 1)
     (message "Done.")))
 
+(use-package lean4-mode
+  :straight (lean4-mode
+             :type git
+             :host github
+             :repo "leanprover/lean4-mode"
+             :files ("*.el" "data"))
+  :commands (lean4-mode)
+  :config
+  (add-to-list 'exec-path (concat (getenv "HOME")
+                                  ".elan/bin")))
+
+(setenv "PATH" (concat (getenv "PATH") ":"
+                         (concat (getenv "HOME")
+                                 "/.elan/bin")))
+
 (use-package rust-mode
   :config
   (setq cargo-path (concat (getenv "HOME")
@@ -206,6 +236,8 @@ minibuffer."
        ("C-c M-t" . my/does-arduino-program-work))
   :config
   (add-to-list 'auto-mode-alist (my/file-extension-regex "ino" 'arduino-mode)))
+
+
 
 (use-package magit
   :ensure t)
@@ -390,14 +422,20 @@ Also see `prot-window-delete-popup-frame'." command)
 (use-package casual-avy
   :bind ("M-g g" . casual-avy-tmenu))
 
-(use-package dracula-theme
+;; (use-package dracula-theme
+;;   :defer nil
+;;   :ensure t
+;;   :config
+;;   (load-theme 'dracula t))
+
+(use-package badger-theme
   :defer nil
   :ensure t
   :config
-  (load-theme 'dracula t))
+  (load-theme 'badger t))
 
-(set-frame-parameter (selected-frame) 'alpha '(90 . 50))
-(add-to-list 'default-frame-alist '(alpha . (90 . 50)))
+(set-frame-parameter (selected-frame) 'alpha '(95 . 90))
+(add-to-list 'default-frame-alist '(alpha . (95 . 90)))
 
 (use-package casual-dired
   :ensure t
