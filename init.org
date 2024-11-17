@@ -501,6 +501,18 @@ We set the full name, and a username, alonside some other variables.
 
   (global-set-key (kbd "M-p e") 'erc-tls)
 #+end_src
+
+** Emms
+Emms is cool.
+#+begin_src elisp
+  (use-package emms
+    :defer t
+    :config
+    (setq emms-player-list '(emms-player-mpv)
+          emms-source-file-default-directory "/home/cam/Music/music"))
+
+  (emms-all)
+#+end_src
 ** Elpher
 Elpher is a gopher/gemini browser which I woud like to play with.
 #+begin_src elisp
@@ -526,15 +538,9 @@ Some lovely music for while doing things, in a FLOSS manner :) .
                                     ("n5MD - soma fm"         . "https://somafm.com/n5md.pls")
                                     ("drone zone - soma fm"   . "https://somafm.com/dronezone256.pls")
                                     ("vaporwave - soma fm"    . "https://somafm.com/vaporwaves.pls")
+                                    ("mellow rock - some fm"  . "https://somafm.com/seventies320.pls")
                                     ("dark ind amb - soma fm" . "https://somafm.com/doomed256.pls"))))
 
-#+end_src
-
-And also a keybinding for my favourite channel (defcon, at soma fm).
-#+begin_src elisp
-  (global-set-key (kbd "C-c r d") (lambda nil "Play somafm -- defcon, via eradio."
-  				  (interactive)
-  				  (eradio-play "https://somafm.com/defcon256.pls")))
 #+end_src
 ** Elfeed
 RSS is a good way to keep up with news, so we want to use elfeed to do that.
