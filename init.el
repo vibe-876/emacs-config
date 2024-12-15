@@ -242,8 +242,6 @@ minibuffer."
   :config
   (add-to-list 'auto-mode-alist (cam/file-extension-regex "ino" 'arduino-mode)))
 
-
-
 (add-to-list 'auto-mode-alist (cam/file-extension-regex "hc" 'c-mode))
 
 (use-package magit
