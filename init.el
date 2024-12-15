@@ -23,21 +23,21 @@
 
 (setq package-selected-packages '(lsp-mode treemacs focus yaml pkg-info auctex which-key dracula-theme elfeed emms eradio geiser geiser-guile geiser-chicken haskell-mode casual-agenda casual-avy casual-dired casual-info magit org-bullets org-ref org-roam org-superstar paredit poker rainbow-delimiters rustic ulisp-repl use-package ace-window avy academic-phrases arduino-mode 2048-game bui dap-mode casual 0blayout))
 
-(defun my/final-element (list)
+(defun cam/final-element (list)
   "Takes a list, and returns the final
 element."
   (if (eq (cdr list) nil)
       (car list)
-    (my/final-element (cdr list))))
+    (cam/final-element (cdr list))))
 
-(defmacro my/file-extension-regex (extension mode)
+(defmacro cam/file-extension-regex (extension mode)
   "Creates a cons cell, where the car is a regex for
 some given file extension, and the cdr is some mode.
 
 This is meant to be used in the `auto-mode-alist'."
   `(cons (concat "\\." ,extension "$") ,mode))
 
-(defmacro my/default-value (value default)
+(defmacro cam/default-value (value default)
   "Just a little macro to make optional arguments
 to procedures a little easier to read."
   `(when (equal ,value nil) (setq ,value ,default)))
@@ -45,24 +45,24 @@ to procedures a little easier to read."
 (add-hook 'emacs-lisp-mode-hook #'rainbow-delimiters-mode)
 (add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode)
 
-(defun my/load-init (&optional config-dir config-file output-file)
+(defun cam/load-init (&optional config-dir config-file output-file)
   "Tangle and reload ~/.emacs.d/init.org, because it is a pain to do it manually.
 
 If a different file is used as a config, then arguments can be passed. CONFIG-DIR
-is the directory that my/load-init will assume the config files live in, CONFIG-FILE
+is the directory that cam/load-init will assume the config files live in, CONFIG-FILE
 is the literate org file that is to be tangled, and OUTPUT-FILE is the emacs lisp
 file that will be tangled to, and then loaded."
   (interactive)
-  (my/default-value config-dir (concat (getenv "HOME") "/.emacs.d"))
-  (my/default-value config-file "/init.org")
-  (my/default-value output-file "/init.el")
+  (cam/default-value config-dir (concat (getenv "HOME") "/.emacs.d"))
+  (cam/default-value config-file "/init.org")
+  (cam/default-value output-file "/init.el")
 
   (save-buffer (concat config-dir config-file))
   (org-babel-tangle nil (concat config-dir config-file))
   (load-file (concat config-dir output-file))
   (message "Done :)"))
 
-(global-set-key (kbd "M-p M-s") 'my/load-init)
+(global-set-key (kbd "M-p M-s") 'cam/load-init)
 
 (setq inhibit-startup-message t)
 (setq initial-scratch-message "")
@@ -102,7 +102,7 @@ file that will be tangled to, and then loaded."
     (setenv "PATH" (concat (getenv "PATH") ":" cam-ghcup-path))
     (add-to-list 'exec-path cam-ghcup-path)))
 
-(defun my/haskell-load-literate-file nil
+(defun cam/haskell-load-literate-file nil
   "Load a literate org file containing Haskell code
 into ghci.
 
@@ -128,7 +128,7 @@ simple."
     (find-file haskell-file)
     (haskell-process-load-file)
     (haskell-interactive-mode-clear)
-    (kill-buffer (my/final-element (split-string haskell-file "/")))
+    (kill-buffer (cam/final-element (split-string haskell-file "/")))
 
     (find-file file-name)
     (delete-other-windows)
@@ -169,8 +169,8 @@ simple."
   :config
   (setq rustic-format-on-save nil
         rustic-lsp-client 'lsp-mode)
-  (let (rust-file-extension (my/file-extension-regex "rs"))
-    (add-to-list 'auto-mode-alist (my/file-extension-regex "rs" 'rustic-mode)))
+  (let (rust-file-extension (cam/file-extension-regex "rs"))
+    (add-to-list 'auto-mode-alist (cam/file-extension-regex "rs" 'rustic-mode)))
 
   :custom
   (rustic-cargo-use-last-stored-arguments t)
@@ -178,7 +178,7 @@ simple."
 
   :after (rust-mode))
 
-(defun my/arduino-compile-and-load (&optional board-name board-port path-to-root)
+(defun cam/arduino-compile-and-load (&optional board-name board-port path-to-root)
   "Just compiles and then loads an arduino sketch.
 Meant to be used alongside `serial-term'.
 
@@ -187,9 +187,9 @@ Defaults to an arduino uno, because that's what I use.
 If a serial connection is already open inside emacs for the
 port that we want to connect to, it kills that buffer."
   (interactive)
-  (my/default-value board-name "arduino:avr:uno")
-  (my/default-value board-port "/dev/ttyACM0")
-  (my/default-value path-to-root ".")
+  (cam/default-value board-name "arduino:avr:uno")
+  (cam/default-value board-port "/dev/ttyACM0")
+  (cam/default-value path-to-root ".")
 
   (let ((arduino-buffer "*arduino-logs*"))
     (get-buffer arduino-buffer)
@@ -209,15 +209,15 @@ port that we want to connect to, it kills that buffer."
     (serial-term board-port 9600)
     (switch-to-buffer board-port)))
 
-(defun my/does-arduino-program-work (&optional board-name path-to-root)
+(defun cam/does-arduino-program-work (&optional board-name path-to-root)
   "Tries to compile the program, and will
 whine if it doesn't.
 
 It'll tell you if it works or not in the
 minibuffer."
   (interactive)
-  (my/default-value board-name "arduino:avr:uno")
-  (my/default-value path-to-root ".")
+  (cam/default-value board-name "arduino:avr:uno")
+  (cam/default-value path-to-root ".")
 
   (if (equal 1 (call-process "arduino-cli" nil "*arduino-logs*" t
                            "compile"
@@ -228,23 +228,23 @@ minibuffer."
 
     (message "Yeah, it works :) .")))
 
-(defun my/test-arduino-from-org (&optional tangle-file)
+(defun cam/test-arduino-from-org (&optional tangle-file)
   "Bla bla bla faggot shit"
   (interactive)
-  (my/default-value tangle-file (current-buffer))
+  (cam/default-value tangle-file (current-buffer))
 
   (org-babel-tangle nil (current-buffer)))
 
 (use-package arduino-mode
   :ensure t
-  :bind (("C-c M-c" . my/arduino-compile-and-load)
-       ("C-c M-t" . my/does-arduino-program-work))
+  :bind (("C-c M-c" . cam/arduino-compile-and-load)
+       ("C-c M-t" . cam/does-arduino-program-work))
   :config
-  (add-to-list 'auto-mode-alist (my/file-extension-regex "ino" 'arduino-mode)))
+  (add-to-list 'auto-mode-alist (cam/file-extension-regex "ino" 'arduino-mode)))
 
 
 
-(add-to-list 'auto-mode-alist (my/file-extension-regex "hc" 'c-mode))
+(add-to-list 'auto-mode-alist (cam/file-extension-regex "hc" 'c-mode))
 
 (use-package magit
   :straight t)
@@ -386,7 +386,7 @@ Also see `prot-window-delete-popup-frame'." command)
 
 (emms-all)
 
-(transient-define-prefix my/emms-transient nil
+(transient-define-prefix cam/emms-transient nil
   "Just an emms transient menu."
   [["start/stop"
     ("s" "start" emms-start)
@@ -395,7 +395,7 @@ Also see `prot-window-delete-popup-frame'." command)
    ["misc"
     ("n" "next"  emms-next)]])
 
-(global-set-key (kbd "M-p C-e") 'my/emms-transient)
+(global-set-key (kbd "M-p C-e") 'cam/emms-transient)
 
 (use-package elpher
   :straight t)
@@ -436,15 +436,15 @@ Also see `prot-window-delete-popup-frame'." command)
           ("https://www.theregister.com/security/cyber_crime/headlines.atom" tech security news)
           ("https://www.theregister.com/on_prem/hpc/headlines.atom" tech hpc news)
           ("https://welltypedwit.ch/rss.xml" tech blog)
-          ("https://www.youtube.com/feeds/videos.xml?channel_id=UC3_kehZbfRz-KrjXIqeIiPw" blog video trans) ;; Leadhead
+          ("https://feeds.libsyn.com/499093/rss" tech podcast)
+          ("http://hackaday.libsyn.com/rss" tech podcast)
+          ("https://www.youtube.com/feeds/videos.xml?channel_id=UC3_kehZbfRz-KrjXIqeIiPw" blog video) ;; Leadhead
           ("https://www.youtube.com/feeds/videos.xml?channel_id=UCzfyYtgvkx5mLy8nlLlayYg" video show) ;; Helluva Boss
           ("https://www.youtube.com/feeds/videos.xml?channel_id=UCVHxJghKAB_kA_5LMM8MD3w" phil video) ;; oliSUNvia
           ("https://www.youtube.com/feeds/videos.xml?channel_id=UC3cpN6gcJQqcCM6mxRUo_dA" video spooky)	;; Wendigoon
           ("https://www.youtube.com/feeds/videos.xml?channel_id=UCIPfjC8FVLdul4-35JekB1g" video spooky)	;; Real Horror
           ("https://www.youtube.com/feeds/videos.xml?channel_id=UCtHaxi4GTYDpJgMSGy7AeSw" video tech) ;; Michael Reeves
           )))
-
-
 
 (use-package ace-window
   :straight t
