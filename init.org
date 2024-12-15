@@ -39,7 +39,7 @@ Using ~straight.el~ now.
 
 Also, we can set ~use-package~ to defer by default (as that is my default for packages), saving some extra keystrokes for package configuration.
 #+begin_src elisp
-  (setq use-package-always-ensure t
+  (setq ;; use-package-always-ensure t
         use-package-always-defer t)
 #+end_src
 
@@ -136,20 +136,23 @@ I'll probably just be using GNU Guile, and maybe MIT if SICP needs it.
 We start by getting ~Geiser~.
 #+begin_src elisp
   (use-package geiser
+    :straight t
     :defer nil
     :config
     (setq geiser-active-implementations '(guile))
     :hook ((scheme-mode . rainbow-delimiters-mode)
-  	 (scheme-mode . enable-paredit-mode)))
+         (scheme-mode . enable-paredit-mode)))
 #+end_src
 
 Now, we configre individual Schemes.
 #+begin_src elisp
   (use-package geiser-guile
+    :straight t
     :config
     (setq geiser-guile-binary "/usr/bin/guile"))
 
   (use-package geiser-chicken
+    :straight t
     :config
     (setq geiser-chicken-binary "/sbin/chicken-csi"))
 #+end_src
@@ -158,7 +161,7 @@ So we want Haskell, because it is cool.
 We make sure to add ghcup's binaries to the path, and add some keybindings so that Haskell can easily be compiled.
 #+begin_src elisp
   (use-package haskell-mode
-    :ensure t
+    :straight t
     :bind
     (:map haskell-mode-map ("C-c C-c" . haskell-compile))
     (:map haskell-cabal-mode-map ("C-c C-c" . haskell-compile))
@@ -233,6 +236,7 @@ Much like Haskell, we add cargo's binaries to the path.
 And then we just use ~use-package~ to setup that, alongside ~rust-mode~ and ~rustic~.
 #+begin_src elisp
   (use-package rust-mode
+    :straight t
     :config
     (setq cargo-path (concat (getenv "HOME")
                              "./cargo/bin"))
@@ -242,6 +246,7 @@ And then we just use ~use-package~ to setup that, alongside ~rust-mode~ and ~rus
     (add-to-list 'exec-path cargo-path))
 
   (use-package rustic
+    :straight t
     :ensure t
     :config
     (setq rustic-format-on-save nil
@@ -306,6 +311,7 @@ I also want a procedure that allows me to simply see if the arduino program will
                              "compile"
                              "--fqbn" board-name
                              path-to-root))
+      
         (switch-to-buffer-other-window "*arduino-logs*")
 
       (message "Yeah, it works :) .")))
@@ -336,11 +342,15 @@ It might be worth trying to get ~M-x compile~ to work with arduino, so I'll give
 #+begin_src elisp
   
 #+end_src
+** Holy C
+#+begin_src elisp
+  (add-to-list 'auto-mode-alist (my/file-extension-regex "hc" 'c-mode))
+#+end_src
 ** Magit
 Very simple, basically just enabling magit.
 #+begin_src elisp
   (use-package magit
-    :ensure t)
+    :straight t)
 #+end_src
 * Org
 ** Agenda
@@ -445,6 +455,21 @@ Remove the useless stuff from the bottom of org to html exports.
         org-export-with-author nil
         org-export-with-toc nil)
 #+end_src
+
+Also, I want syntax highlighting for my exports.
+#+begin_src elisp
+  ;; (use-package ox-latex
+  ;;   :config
+  ;;   (setq org-latex-listings 'minted)
+  ;;   (add-to-list 'org-export-latex-package-alist '("" "minted")))
+
+
+  ;;(add-to-list org-export-latex-package-alist '("" "minted"))
+  (setq org-latex-listings 'minted
+        org-latex-pdf-process '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+                                "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+                                "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+#+end_src
 ** Org Rice
 I wouldn't try to understand this if I were you -- this is the only bit of my config that I didn't hand-write, and instead copied off of a website. I'll link it when I find it again.
 #+begin_src elisp
@@ -506,6 +531,7 @@ We set the full name, and a username, alonside some other variables.
 Emms is cool.
 #+begin_src elisp
   (use-package emms
+    :straight t
     :defer t
     :config
     (setq emms-player-list '(emms-player-mpv)
@@ -516,13 +542,14 @@ Emms is cool.
 ** Elpher
 Elpher is a gopher/gemini browser which I woud like to play with.
 #+begin_src elisp
-  (use-package elpher)
+  (use-package elpher
+    :straight t)
 #+end_src
 ** Eradio
 Some lovely music for while doing things, in a FLOSS manner :) .
 #+begin_src elisp
   (use-package eradio
-    :ensure t
+    :straight t
     :bind (("C-c r p" . eradio-play)
            ("C-c r s" . eradio-stop)
            ("C-c r t" . eradio-toggle))
@@ -546,7 +573,8 @@ Some lovely music for while doing things, in a FLOSS manner :) .
 RSS is a good way to keep up with news, so we want to use elfeed to do that.
 #+begin_src elisp
   (use-package elfeed
-    :bind ("C-c e" . 'elfeed)
+    :straight t
+    :bind ("C-c e" . elfeed)
     :config
     (setq elfeed-feeds
           '(("https://planet.emacslife.com/atom.xml" blog emacs)
@@ -555,35 +583,41 @@ RSS is a good way to keep up with news, so we want to use elfeed to do that.
             ("https://www.smbc-comics.com/comic/rss" comic)
             ("https://www.monkeyuser.com/index.xml" comic)
             ("https://archlinux.org/feeds/news/" arch linux tech)
+            ("https://wolfgirl.dev/blog/rss.xml" blog tech prog)
+            ("https://izzys.casa/index.xml" blog tech prog)
             ("https://www.theregister.com/security/cyber_crime/headlines.atom" tech security news)
             ("https://www.theregister.com/on_prem/hpc/headlines.atom" tech hpc news)
-  ;	  ("gemini://geminiprotocol.net/news/atom.xml" gemini tech) ;; Doesn't work at the moment
-            ("https://www.youtube.com/feeds/videos.xml?channel_id=UCtEb98_ptdXj6N6woTfgxVQ" blog video trans) ;; Icky
+            ("https://welltypedwit.ch/rss.xml" tech blog)
             ("https://www.youtube.com/feeds/videos.xml?channel_id=UC3_kehZbfRz-KrjXIqeIiPw" blog video trans) ;; Leadhead
-            ("https://www.youtube.com/feeds/videos.xml?channel_id=UCzfyYtgvkx5mLy8nlLlayYg" video show)       ;; Helluva Boss
-            ("https://www.youtube.com/feeds/videos.xml?channel_id=UCVHxJghKAB_kA_5LMM8MD3w" phil video)       ;; oliSUNvia
-            ("https://www.youtube.com/feeds/videos.xml?channel_id=UC3cpN6gcJQqcCM6mxRUo_dA" video spooky)     ;; Wendigoon
-            ("https://www.youtube.com/feeds/videos.xml?channel_id=UCIPfjC8FVLdul4-35JekB1g" video spooky)     ;; Real Horror
-            ("https://www.youtube.com/feeds/videos.xml?channel_id=UCtHaxi4GTYDpJgMSGy7AeSw" video tech)       ;; Michael Reeves
+            ("https://www.youtube.com/feeds/videos.xml?channel_id=UCzfyYtgvkx5mLy8nlLlayYg" video show) ;; Helluva Boss
+            ("https://www.youtube.com/feeds/videos.xml?channel_id=UCVHxJghKAB_kA_5LMM8MD3w" phil video) ;; oliSUNvia
+            ("https://www.youtube.com/feeds/videos.xml?channel_id=UC3cpN6gcJQqcCM6mxRUo_dA" video spooky)	;; Wendigoon
+            ("https://www.youtube.com/feeds/videos.xml?channel_id=UCIPfjC8FVLdul4-35JekB1g" video spooky)	;; Real Horror
+            ("https://www.youtube.com/feeds/videos.xml?channel_id=UCtHaxi4GTYDpJgMSGy7AeSw" video tech) ;; Michael Reeves
             )))
+#+end_src
+
+#+begin_src elisp
 #+end_src
 * Emacs Itself
 ** Movement
 ~other-window~ is a pain sometimes, so we will use ~ace-window~.
 #+begin_src elisp
   (use-package ace-window
+    :straight t
     :demand t
     :config
     (global-set-key (kbd "C-x o") 'ace-window)
     (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)
-  	aw-dispatch-always t
-  	aw-background nil))
+        aw-dispatch-always t
+        aw-background nil))
 #+end_src
 
 Also, ~goto-line~ isn't quite as cool as ~avy~, so we'll use that, alongside ~casual-avy~.
 I'm willing to throw away ~goto-line~'s ~M-g g~ so that it can go towards ~casual-avy-tmenu~.
 #+begin_src elisp
   (use-package avy
+    :straight t
     :demand t
     :config
     (global-set-key (kbd "M-g f") 'avy-goto-line)
@@ -597,30 +631,41 @@ Dracula (obviously).
 #+begin_src elisp
   (use-package badger-theme
     :defer nil
-    :ensure t
+    :straight t
     :config
     (load-theme 'badger t))
 #+end_src
 
 And for some transparency
 #+begin_src elisp
-  (set-frame-parameter (selected-frame) 'alpha '(90 . 50))
-  (add-to-list 'default-frame-alist '(alpha . (90 . 50)))
+  (set-frame-parameter (selected-frame) 'alpha '(95 . 50))
+  (add-to-list 'default-frame-alist '(alpha . (95 . 50)))
+#+end_src
+
+Last and not least, Nyan cat.
+#+begin_src elisp
+  (use-package nyan-mode
+    :straight t)
+
+  (nyan-mode)
 #+end_src
 ** Dired
 I want casual dired.
 #+begin_src elisp
   (use-package casual-dired
-    :ensure t
+  ;  :straight t
     :defer t
     :bind (:map dired-mode-map
-  	      ("C-o" . casual-dired-tmenu)))
+              ("C-o" . casual-dired-tmenu)))
 #+end_src
 ** Games
 We all love some games, every now and again.
 #+begin_src elisp
-  (use-package poker)
-  (use-package 2048-game)
+  (use-package poker
+    :straight t)
+
+  (use-package 2048-game
+    :straight t)
 #+end_src
 ** Server
 We want to have emacs start a server, if one has not already been started.
@@ -651,27 +696,27 @@ Misc things to make emacs just that bit more pretty.
 
 
   (add-hook 'dired-mode-hook (lambda nil
-  			     (dired-hide-details-mode 1)))
+                             (dired-hide-details-mode 1)))
 
   (add-hook 'dired-mode-hook (lambda nil
-  			     (dired-omit-mode 1)))
+                             (dired-omit-mode 1)))
 
 
   (use-package which-key
-    :ensure t)
+    :straight t)
 #+end_src
 
 And for help functions, we want to be able to have access to the casual-info package.
 #+begin_src elisp
   (use-package casual-info
-    :ensure t
+  ;  :straight t
     :bind (:map Info-mode-map ("C-o" . casual-info-tmenu)))
 #+end_src
 
 I want to have easy key bindings, so this goes below.
 #+begin_src elisp
   (use-package which-key
-    :ensure t
+    :straight t
     :defer nil
     :config
     (which-key-mode))
@@ -694,7 +739,7 @@ This is /very/ useful when writing, from org mode, to program comments.
 Focus mode is sometimes useful, useful enough to get a keybinding.
 #+begin_src elisp
   (use-package focus
-    :bind ("M-p C-f" . focus-mode))
+    :straight t)
 #+end_src
 * Final Stuff
 And now finally, we change the garbage collector back.

@@ -1,7 +1,5 @@
 (setq gc-cons-threshold (* 50 1000 1000))
 
-(setq package-enable-at-startup nil)
-
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
@@ -15,14 +13,15 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
+
 ;; (require 'package)
 ;; (add-to-list 'package-archives
 ;;              '("melpa" . "http://melpa.org/packages/") t)
 
-(setq use-package-always-ensure t
+(setq ;; use-package-always-ensure t
       use-package-always-defer t)
 
-(setq package-selected-packages '(lsp-mode treemacs focus yaml pkg-info auctex which-key dracula-theme elfeed emms eradio geiser geiser-guile geiser-chicken haskell-mode casual-agenda casual-avy casual-dired casual-info magit org-bullets org-ref org-roam org-superstar paredit poker rainbow-delimiters rustic ulisp-repl use-package ace-window avy academic-phrases arduino-mode 2048-game bui dap-mode casual 0blayout darcula-theme))
+(setq package-selected-packages '(lsp-mode treemacs focus yaml pkg-info auctex which-key dracula-theme elfeed emms eradio geiser geiser-guile geiser-chicken haskell-mode casual-agenda casual-avy casual-dired casual-info magit org-bullets org-ref org-roam org-superstar paredit poker rainbow-delimiters rustic ulisp-repl use-package ace-window avy academic-phrases arduino-mode 2048-game bui dap-mode casual 0blayout))
 
 (defun my/final-element (list)
   "Takes a list, and returns the final
@@ -76,6 +75,7 @@ file that will be tangled to, and then loaded."
 (setq reb-re-syntax 'rx)
 
 (use-package geiser
+  :straight t
   :defer nil
   :config
   (setq geiser-active-implementations '(guile))
@@ -83,15 +83,17 @@ file that will be tangled to, and then loaded."
        (scheme-mode . enable-paredit-mode)))
 
 (use-package geiser-guile
+  :straight t
   :config
   (setq geiser-guile-binary "/usr/bin/guile"))
 
 (use-package geiser-chicken
+  :straight t
   :config
   (setq geiser-chicken-binary "/sbin/chicken-csi"))
 
 (use-package haskell-mode
-  :ensure t
+  :straight t
   :bind
   (:map haskell-mode-map ("C-c C-c" . haskell-compile))
   (:map haskell-cabal-mode-map ("C-c C-c" . haskell-compile))
@@ -152,6 +154,7 @@ simple."
                                  "/.elan/bin")))
 
 (use-package rust-mode
+  :straight t
   :config
   (setq cargo-path (concat (getenv "HOME")
                            "./cargo/bin"))
@@ -161,6 +164,7 @@ simple."
   (add-to-list 'exec-path cargo-path))
 
 (use-package rustic
+  :straight t
   :ensure t
   :config
   (setq rustic-format-on-save nil
@@ -219,6 +223,7 @@ minibuffer."
                            "compile"
                            "--fqbn" board-name
                            path-to-root))
+
       (switch-to-buffer-other-window "*arduino-logs*")
 
     (message "Yeah, it works :) .")))
@@ -239,8 +244,10 @@ minibuffer."
 
 
 
+(add-to-list 'auto-mode-alist (my/file-extension-regex "hc" 'c-mode))
+
 (use-package magit
-  :ensure t)
+  :straight t)
 
 (setq org-directory (concat (getenv "HOME") "/Documents/Org")
       org-agenda-files (directory-files-recursively org-directory
@@ -310,6 +317,18 @@ Also see `prot-window-delete-popup-frame'." command)
       org-export-with-author nil
       org-export-with-toc nil)
 
+;; (use-package ox-latex
+;;   :config
+;;   (setq org-latex-listings 'minted)
+;;   (add-to-list 'org-export-latex-package-alist '("" "minted")))
+
+
+;;(add-to-list org-export-latex-package-alist '("" "minted"))
+(setq org-latex-listings 'minted
+      org-latex-pdf-process '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+                              "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+                              "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"))
+
 (require 'org-bullets)
 
 (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
@@ -358,10 +377,20 @@ Also see `prot-window-delete-popup-frame'." command)
 
 (global-set-key (kbd "M-p e") 'erc-tls)
 
-(use-package elpher)
+(use-package emms
+  :straight t
+  :defer t
+  :config
+  (setq emms-player-list '(emms-player-mpv)
+        emms-source-file-default-directory "/home/cam/Music/music"))
+
+(emms-all)
+
+(use-package elpher
+  :straight t)
 
 (use-package eradio
-  :ensure t
+  :straight t
   :bind (("C-c r p" . eradio-play)
          ("C-c r s" . eradio-stop)
          ("C-c r t" . eradio-toggle))
@@ -377,14 +406,14 @@ Also see `prot-window-delete-popup-frame'." command)
                                   ("n5MD - soma fm"         . "https://somafm.com/n5md.pls")
                                   ("drone zone - soma fm"   . "https://somafm.com/dronezone256.pls")
                                   ("vaporwave - soma fm"    . "https://somafm.com/vaporwaves.pls")
+                                  ("mellow rock - some fm"  . "https://somafm.com/seventies320.pls")
                                   ("dark ind amb - soma fm" . "https://somafm.com/doomed256.pls"))))
 
-(global-set-key (kbd "C-c r d") (lambda nil "Play somafm -- defcon, via eradio."
-  				(interactive)
-  				(eradio-play "https://somafm.com/defcon256.pls")))
-
 (use-package elfeed
-  :bind ("C-c e" . 'elfeed)
+  :straight t
+  :bind ("C-c e" . elfeed)
+  ;; (:map elfeed-show-mode-map
+  ;;       ("e" . (eww-browse-url (elfeed-entry-link elfeed-show-entry))))
   :config
   (setq elfeed-feeds
         '(("https://planet.emacslife.com/atom.xml" blog emacs)
@@ -393,19 +422,23 @@ Also see `prot-window-delete-popup-frame'." command)
           ("https://www.smbc-comics.com/comic/rss" comic)
           ("https://www.monkeyuser.com/index.xml" comic)
           ("https://archlinux.org/feeds/news/" arch linux tech)
+          ("https://wolfgirl.dev/blog/rss.xml" blog tech prog)
+          ("https://izzys.casa/index.xml" blog tech prog)
           ("https://www.theregister.com/security/cyber_crime/headlines.atom" tech security news)
           ("https://www.theregister.com/on_prem/hpc/headlines.atom" tech hpc news)
-;	  ("gemini://geminiprotocol.net/news/atom.xml" gemini tech) ;; Doesn't work at the moment
-          ("https://www.youtube.com/feeds/videos.xml?channel_id=UCtEb98_ptdXj6N6woTfgxVQ" blog video trans) ;; Icky
+          ("https://welltypedwit.ch/rss.xml" tech blog)
           ("https://www.youtube.com/feeds/videos.xml?channel_id=UC3_kehZbfRz-KrjXIqeIiPw" blog video trans) ;; Leadhead
-          ("https://www.youtube.com/feeds/videos.xml?channel_id=UCzfyYtgvkx5mLy8nlLlayYg" video show)       ;; Helluva Boss
-          ("https://www.youtube.com/feeds/videos.xml?channel_id=UCVHxJghKAB_kA_5LMM8MD3w" phil video)       ;; oliSUNvia
-          ("https://www.youtube.com/feeds/videos.xml?channel_id=UC3cpN6gcJQqcCM6mxRUo_dA" video spooky)     ;; Wendigoon
-          ("https://www.youtube.com/feeds/videos.xml?channel_id=UCIPfjC8FVLdul4-35JekB1g" video spooky)     ;; Real Horror
-          ("https://www.youtube.com/feeds/videos.xml?channel_id=UCtHaxi4GTYDpJgMSGy7AeSw" video tech)       ;; Michael Reeves
+          ("https://www.youtube.com/feeds/videos.xml?channel_id=UCzfyYtgvkx5mLy8nlLlayYg" video show) ;; Helluva Boss
+          ("https://www.youtube.com/feeds/videos.xml?channel_id=UCVHxJghKAB_kA_5LMM8MD3w" phil video) ;; oliSUNvia
+          ("https://www.youtube.com/feeds/videos.xml?channel_id=UC3cpN6gcJQqcCM6mxRUo_dA" video spooky)	;; Wendigoon
+          ("https://www.youtube.com/feeds/videos.xml?channel_id=UCIPfjC8FVLdul4-35JekB1g" video spooky)	;; Real Horror
+          ("https://www.youtube.com/feeds/videos.xml?channel_id=UCtHaxi4GTYDpJgMSGy7AeSw" video tech) ;; Michael Reeves
           )))
 
+
+
 (use-package ace-window
+  :straight t
   :demand t
   :config
   (global-set-key (kbd "C-x o") 'ace-window)
@@ -414,6 +447,7 @@ Also see `prot-window-delete-popup-frame'." command)
       aw-background nil))
 
 (use-package avy
+  :straight t
   :demand t
   :config
   (global-set-key (kbd "M-g f") 'avy-goto-line)
@@ -422,29 +456,31 @@ Also see `prot-window-delete-popup-frame'." command)
 (use-package casual-avy
   :bind ("M-g g" . casual-avy-tmenu))
 
-;; (use-package dracula-theme
-;;   :defer nil
-;;   :ensure t
-;;   :config
-;;   (load-theme 'dracula t))
-
 (use-package badger-theme
   :defer nil
-  :ensure t
+  :straight t
   :config
   (load-theme 'badger t))
 
-(set-frame-parameter (selected-frame) 'alpha '(95 . 90))
-(add-to-list 'default-frame-alist '(alpha . (95 . 90)))
+(set-frame-parameter (selected-frame) 'alpha '(95 . 50))
+(add-to-list 'default-frame-alist '(alpha . (95 . 50)))
+
+(use-package nyan-mode
+  :straight t)
+
+(nyan-mode)
 
 (use-package casual-dired
-  :ensure t
+;  :straight t
   :defer t
   :bind (:map dired-mode-map
-  	    ("C-o" . casual-dired-tmenu)))
+            ("C-o" . casual-dired-tmenu)))
 
-(use-package poker)
-(use-package 2048-game)
+(use-package poker
+  :straight t)
+
+(use-package 2048-game
+  :straight t)
 
 (use-package server
   :ensure nil
@@ -469,21 +505,21 @@ Also see `prot-window-delete-popup-frame'." command)
 
 
 (add-hook 'dired-mode-hook (lambda nil
-  			   (dired-hide-details-mode 1)))
+                           (dired-hide-details-mode 1)))
 
 (add-hook 'dired-mode-hook (lambda nil
-  			   (dired-omit-mode 1)))
+                           (dired-omit-mode 1)))
 
 
 (use-package which-key
-  :ensure t)
+  :straight t)
 
 (use-package casual-info
-  :ensure t
+;  :straight t
   :bind (:map Info-mode-map ("C-o" . casual-info-tmenu)))
 
 (use-package which-key
-  :ensure t
+  :straight t
   :defer nil
   :config
   (which-key-mode))
@@ -496,6 +532,6 @@ Also see `prot-window-delete-popup-frame'." command)
 (global-set-key (kbd "M-£") 'ispell-region)
 
 (use-package focus
-  :bind ("M-p C-f" . focus-mode))
+  :straight t)
 
 (setq gc-cons-threshold (* 2 1000 1000))
