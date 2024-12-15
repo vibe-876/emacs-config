@@ -539,6 +539,21 @@ Emms is cool.
 
   (emms-all)
 #+end_src
+
+I want to be able to easily use emms without ~M-x~ ing a bunch of things, or adding a bunch of new keybinds.
+The solution to this is transient.
+#+begin_src elisp
+  (transient-define-prefix my/emms-transient nil
+    "Just an emms transient menu."
+    [["start/stop"
+      ("s" "start" emms-start)
+      ("p" "pause" emms-pause)
+      ("S" "stop"  emms-stop)]
+     ["misc"
+      ("n" "next"  emms-next)]])
+
+  (global-set-key (kbd "M-p C-e") 'my/emms-transient)
+#+end_src
 ** Elpher
 Elpher is a gopher/gemini browser which I woud like to play with.
 #+begin_src elisp

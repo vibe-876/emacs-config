@@ -386,6 +386,17 @@ Also see `prot-window-delete-popup-frame'." command)
 
 (emms-all)
 
+(transient-define-prefix my/emms-transient nil
+  "Just an emms transient menu."
+  [["start/stop"
+    ("s" "start" emms-start)
+    ("p" "pause" emms-pause)
+    ("S" "stop"  emms-stop)]
+   ["misc"
+    ("n" "next"  emms-next)]])
+
+(global-set-key (kbd "M-p C-e") 'my/emms-transient)
+
 (use-package elpher
   :straight t)
 
@@ -412,8 +423,6 @@ Also see `prot-window-delete-popup-frame'." command)
 (use-package elfeed
   :straight t
   :bind ("C-c e" . elfeed)
-  ;; (:map elfeed-show-mode-map
-  ;;       ("e" . (eww-browse-url (elfeed-entry-link elfeed-show-entry))))
   :config
   (setq elfeed-feeds
         '(("https://planet.emacslife.com/atom.xml" blog emacs)
