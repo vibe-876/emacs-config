@@ -393,7 +393,7 @@ Also see `prot-window-delete-popup-frame'." command)
    ["misc"
     ("n" "next"  emms-next)]])
 
-(global-set-key (kbd "M-p C-e") 'cam/emms-transient)
+(global-set-key (kbd "C-c r e") 'cam/emms-transient)
 
 (use-package elpher
   :straight t)

@@ -547,7 +547,7 @@ The solution to this is transient.
      ["misc"
       ("n" "next"  emms-next)]])
 
-  (global-set-key (kbd "M-p C-e") 'cam/emms-transient)
+  (global-set-key (kbd "C-c r e") 'cam/emms-transient)
 #+end_src
 ** Elpher
 Elpher is a gopher/gemini browser which I woud like to play with.
