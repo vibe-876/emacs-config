@@ -444,6 +444,11 @@ Also see `prot-window-delete-popup-frame'." command)
           ("https://www.youtube.com/feeds/videos.xml?channel_id=UCtHaxi4GTYDpJgMSGy7AeSw" video tech) ;; Michael Reeves
           )))
 
+;; Should add this to the use-package...
+(add-hook 'elfeed-new-entry-hook
+          (elfeed-make-tagger :before "2 months ago"
+                              :remove 'unread))
+
 (use-package ace-window
   :straight t
   :demand t
