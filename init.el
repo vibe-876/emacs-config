@@ -18,7 +18,7 @@
 ;; (add-to-list 'package-archives
 ;;              '("melpa" . "http://melpa.org/packages/") t)
 
-(setq ;; use-package-always-ensure t
+(setq straight-use-package-by-default t
       use-package-always-defer t)
 
 (setq package-selected-packages '(lsp-mode treemacs focus yaml pkg-info auctex which-key dracula-theme elfeed emms eradio geiser geiser-guile geiser-chicken haskell-mode casual-agenda casual-avy casual-dired casual-info magit org-bullets org-ref org-roam org-superstar paredit poker rainbow-delimiters rustic ulisp-repl use-package ace-window avy academic-phrases arduino-mode 2048-game bui dap-mode casual 0blayout))
@@ -256,6 +256,7 @@ minibuffer."
 (global-set-key (kbd "C-c a") 'org-agenda)
 
 (use-package casual-agenda
+  :straight nil
   :ensure t
   :bind (:map org-agenda-mode-map ("C-o" . casual-agenda-tmenu))
   :after (org-agenda))
@@ -375,6 +376,20 @@ Also see `prot-window-delete-popup-frame'." command)
 
 (global-set-key (kbd "M-p e") 'erc-tls)
 
+(use-package mu4e
+  :ensure nil
+  :straight nil
+  :defer t
+  :load-path "/usr/share/emacs/site-lisp/mu4e"
+  :commands (mu4e)
+  :config
+  (setq mu4e-maildir (expand-file-name "~/Documents/email")
+        mu4e-drafts-folder "/drafts"
+        mu4e-sent-folder "/sent-items"
+        mu4e-trash-folder  "/trash"
+        mu4e-show-images t
+        mail-user-agent 'mu4e-user-agent))
+
 (use-package emms
   :straight t
   :defer t
@@ -422,6 +437,9 @@ Also see `prot-window-delete-popup-frame'." command)
   :straight t
   :bind ("C-c e" . elfeed)
   :config
+  ;; (add-hook 'elfeed-new-entry-hook
+  ;;         (elfeed-make-tagger :before "2 months ago"
+  ;;                             :remove 'unread))
   (setq elfeed-feeds
         '(("https://planet.emacslife.com/atom.xml" blog emacs)
           ("https://summeremacs.github.io/posts/index.xml" blog emacs)
@@ -431,11 +449,12 @@ Also see `prot-window-delete-popup-frame'." command)
           ("https://archlinux.org/feeds/news/" arch linux tech)
           ("https://wolfgirl.dev/blog/rss.xml" blog tech prog)
           ("https://izzys.casa/index.xml" blog tech prog)
-          ("https://www.theregister.com/security/cyber_crime/headlines.atom" tech security news)
-          ("https://www.theregister.com/on_prem/hpc/headlines.atom" tech hpc news)
+          ("https://faultlore.com/blah/rss.xml" blog tech prog)
           ("https://welltypedwit.ch/rss.xml" tech blog)
           ("https://feeds.libsyn.com/499093/rss" tech podcast)
           ("http://hackaday.libsyn.com/rss" tech podcast)
+          ("https://rustacean-station.org/podcast.rss" tech prog podcast)
+          ("https://risky.biz/feeds/risky-business-news/" tech security podcast)
           ("https://www.youtube.com/feeds/videos.xml?channel_id=UC3_kehZbfRz-KrjXIqeIiPw" blog video) ;; Leadhead
           ("https://www.youtube.com/feeds/videos.xml?channel_id=UCzfyYtgvkx5mLy8nlLlayYg" video show) ;; Helluva Boss
           ("https://www.youtube.com/feeds/videos.xml?channel_id=UCVHxJghKAB_kA_5LMM8MD3w" phil video) ;; oliSUNvia
@@ -445,9 +464,9 @@ Also see `prot-window-delete-popup-frame'." command)
           )))
 
 ;; Should add this to the use-package...
-(add-hook 'elfeed-new-entry-hook
-          (elfeed-make-tagger :before "2 months ago"
-                              :remove 'unread))
+;; (add-hook 'elfeed-new-entry-hook
+;;           (elfeed-make-tagger :before "2 months ago"
+;;                               :remove 'unread))
 
 (use-package ace-window
   :straight t
@@ -468,11 +487,11 @@ Also see `prot-window-delete-popup-frame'." command)
 (use-package casual-avy
   :bind ("M-g g" . casual-avy-tmenu))
 
-(use-package badger-theme
+(use-package ef-themes
   :defer nil
-  :straight t
+  :demand t
   :config
-  (load-theme 'badger t))
+  (load-theme 'ef-dream t))
 
 (set-frame-parameter (selected-frame) 'alpha '(95 . 50))
 (add-to-list 'default-frame-alist '(alpha . (95 . 50)))
@@ -483,10 +502,10 @@ Also see `prot-window-delete-popup-frame'." command)
 (nyan-mode)
 
 (use-package casual-dired
-;  :straight t
+  :straight nil
   :defer t
   :bind (:map dired-mode-map
-            ("C-o" . casual-dired-tmenu)))
+	    ("C-o" . casual-dired-tmenu)))
 
 (use-package poker
   :straight t)
@@ -527,7 +546,7 @@ Also see `prot-window-delete-popup-frame'." command)
   :straight t)
 
 (use-package casual-info
-;  :straight t
+  :straight nil
   :bind (:map Info-mode-map ("C-o" . casual-info-tmenu)))
 
 (use-package which-key
