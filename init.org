@@ -662,7 +662,7 @@ I'm willing to throw away ~goto-line~'s ~M-g g~ so that it can go towards ~casua
     :bind ("M-g g" . casual-avy-tmenu))
 #+end_src
 ** Themes
-Gruvbox.
+One of Prot's themes.
 #+begin_src elisp
   (use-package ef-themes
     :defer nil
