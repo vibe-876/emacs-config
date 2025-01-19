@@ -33,6 +33,7 @@ And also, I don't want gnu's stuff at start up.
 
   (setq inhibit-startup-screen t)
 #+end_src
+
 * Programming
 ** Emacs Lisp
 Obvious reasons why I need to be including this.
@@ -40,6 +41,7 @@ Obvious reasons why I need to be including this.
   (straight-use-package 'paredit)
   (add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode)
 #+end_src
+
 ** Magit
 #+begin_src elisp
   (straight-use-package 'magit)
