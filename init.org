@@ -37,3 +37,15 @@ Obvious reasons why I need to be including this.
   (straight-use-package 'magit)
 #+end_src
 
+* Misc
+I want a theme.
+#+begin_src elisp
+  (straight-use-package 'ef-themes)
+  (load-theme 'ef-cherie t)
+
+  (tool-bar-mode -1)
+  (menu-bar-mode -1)
+  (scroll-bar-mode -1)
+
+  (defalias 'yes-or-no-p 'y-o-n-p)
+#+end_src

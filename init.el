@@ -17,3 +17,12 @@
 (add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode)
 
 (straight-use-package 'magit)
+
+(straight-use-package 'ef-themes)
+(load-theme 'ef-cherie t)
+
+(tool-bar-mode -1)
+(menu-bar-mode -1)
+(scroll-bar-mode -1)
+
+(defalias 'yes-or-no-p 'y-o-n-p)
