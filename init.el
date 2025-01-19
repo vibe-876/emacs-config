@@ -1,3 +1,5 @@
+(setq package-enable-at-startup nil)
+
 (defvar bootstrap-version)
 (let ((bootstrap-file
        (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
@@ -10,5 +12,8 @@
       (goto-char (point-max))
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
+
+(straight-use-package 'paredit)
+(add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode)
 
 (straight-use-package 'magit)

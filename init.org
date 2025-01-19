@@ -9,6 +9,8 @@
 * Start up
 So the first thing that we need is to setup ~straight.el~ instead of ~package.el~.
 #+begin_src elisp
+  (setq package-enable-at-startup nil)
+
   (defvar bootstrap-version)
   (let ((bootstrap-file
 	 (expand-file-name "straight/repos/straight.el/bootstrap.el" user-emacs-directory))
@@ -23,8 +25,15 @@ So the first thing that we need is to setup ~straight.el~ instead of ~package.el
     (load bootstrap-file nil 'nomessage))
 #+end_src
 
-* Programming Tools
+* Programming
+** Emacs Lisp
+Obvious reasons why I need to be including this.
+#+begin_src elisp
+  (straight-use-package 'paredit)
+  (add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode)
+#+end_src
 ** Magit
 #+begin_src elisp
   (straight-use-package 'magit)
 #+end_src
+
