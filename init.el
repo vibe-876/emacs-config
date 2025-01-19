@@ -24,6 +24,32 @@
 
 (straight-use-package 'magit)
 
+(straight-use-package 'elfeed)
+(global-set-key (kbd "C-c e") 'elfeed)
+
+(setq elfeed-feeds
+      '(("https://planet.emacslife.com/atom.xml" blog emacs)
+	("https://summeremacs.github.io/posts/index.xml" blog emacs)
+	("https://xkcd.com/rss.xml" comic)
+	("https://www.smbc-comics.com/comic/rss" comic)
+	("https://www.monkeyuser.com/index.xml" comic)
+	("https://archlinux.org/feeds/news/" arch linux tech)
+	("https://wolfgirl.dev/blog/rss.xml" blog tech prog)
+	("https://izzys.casa/index.xml" blog tech prog)
+	("https://faultlore.com/blah/rss.xml" blog tech prog)
+	("https://welltypedwit.ch/rss.xml" tech blog)
+	("https://feeds.libsyn.com/499093/rss" tech podcast)
+	("http://hackaday.libsyn.com/rss" tech podcast)
+	("https://rustacean-station.org/podcast.rss" tech prog podcast)
+	("https://risky.biz/feeds/risky-business-news/" tech security podcast)
+	("https://www.youtube.com/feeds/videos.xml?channel_id=UC3_kehZbfRz-KrjXIqeIiPw" blog video) ;; Leadhead
+	("https://www.youtube.com/feeds/videos.xml?channel_id=UCzfyYtgvkx5mLy8nlLlayYg" video show) ;; Helluva Boss
+	("https://www.youtube.com/feeds/videos.xml?channel_id=UCVHxJghKAB_kA_5LMM8MD3w" video phil) ;; oliSUNvia
+	("https://www.youtube.com/feeds/videos.xml?channel_id=UC3cpN6gcJQqcCM6mxRUo_dA" video spooky) ;; Wendigoon
+	("https://www.youtube.com/feeds/videos.xml?channel_id=UCIPfjC8FVLdul4-35JekB1g" video spooky) ;; ABSTRACT
+	("https://www.youtube.com/feeds/videos.xml?channel_id=UCtMVHI3AJD4Qk4hcbZnI9ZQ" video blog) ;; SOG
+	))
+
 (straight-use-package 'ef-themes)
 (load-theme 'ef-cherie t)
 
