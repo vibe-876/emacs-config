@@ -24,6 +24,8 @@
 
 (straight-use-package 'magit)
 
+(straight-use-package 'lsp-mode)
+
 (straight-use-package 'elfeed)
 (global-set-key (kbd "C-c e") 'elfeed)
 

@@ -47,6 +47,11 @@ Obvious reasons why I need to be including this.
   (straight-use-package 'magit)
 #+end_src
 
+** LSP Mode
+LSP mode is a language server protocol implementation, which seems like it could be useful.
+#+begin_src elisp
+  (straight-use-package 'lsp-mode)
+#+end_src
 * Media
 ** Elfeed
 #+begin_src elisp
