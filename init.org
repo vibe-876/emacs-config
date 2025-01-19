@@ -76,6 +76,13 @@ Obvious reasons why I need to be including this.
 	  ("https://www.youtube.com/feeds/videos.xml?channel_id=UCtMVHI3AJD4Qk4hcbZnI9ZQ" video blog) ;; SOG
 	  ))
 #+end_src
+** Emms
+The almighty emms.
+#+begin_src elisp
+  (straight-use-package 'emms)
+  (setq emms-player-list '(emms-player-mpv)
+	emms-source-file-default-directory "/home/cam/Music/music")
+#+end_src
 
 * Misc
 I want a theme.

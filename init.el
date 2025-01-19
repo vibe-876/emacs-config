@@ -50,6 +50,10 @@
 	("https://www.youtube.com/feeds/videos.xml?channel_id=UCtMVHI3AJD4Qk4hcbZnI9ZQ" video blog) ;; SOG
 	))
 
+(straight-use-package 'emms)
+(setq emms-player-list '(emms-player-mpv)
+      emms-source-file-default-directory "/home/cam/Music/music")
+
 (straight-use-package 'ef-themes)
 (load-theme 'ef-cherie t)
 
