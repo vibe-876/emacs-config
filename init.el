@@ -13,6 +13,12 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
+(defun display-startup-echo-area-message nil
+  "I don't want gnu's stuff at startup, I want my stuff."
+  (message "Hello Cam :) ."))
+
+(setq inhibit-startup-screen t)
+
 (straight-use-package 'paredit)
 (add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode)
 

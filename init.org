@@ -25,6 +25,14 @@ So the first thing that we need is to setup ~straight.el~ instead of ~package.el
     (load bootstrap-file nil 'nomessage))
 #+end_src
 
+And also, I don't want gnu's stuff at start up.
+#+begin_src elisp
+  (defun display-startup-echo-area-message nil
+    "I don't want gnu's stuff at startup, I want my stuff."
+    (message "Hello Cam :) ."))
+
+  (setq inhibit-startup-screen t)
+#+end_src
 * Programming
 ** Emacs Lisp
 Obvious reasons why I need to be including this.
