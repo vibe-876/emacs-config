@@ -121,6 +121,8 @@
       ("p" "Personal" entry (file+headline org-agenda-personal-file "Stuff ToDo")
        "* TODO [#C] %?\nSCHEDULED: %t")))
 
+(global-set-key (kbd "C-c c") 'org-capture)
+
 (use-package ef-themes
   :defer nil
   :config

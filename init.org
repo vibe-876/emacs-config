@@ -181,6 +181,8 @@ The capture templates themselves are seperated into different things that I need
 	 "* TODO [#C] %?\nSCHEDULED: %t")
 	("p" "Personal" entry (file+headline org-agenda-personal-file "Stuff ToDo")
 	 "* TODO [#C] %?\nSCHEDULED: %t")))
+
+  (global-set-key (kbd "C-c c") 'org-capture)
 #+end_src
 
 * Misc
