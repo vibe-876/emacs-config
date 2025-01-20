@@ -23,6 +23,8 @@
 
 (setq inhibit-startup-screen t)
 
+(server-start)
+
 (use-package paredit
   :defer nil
   :hook ((scheme-mode     . enable-paredit-mode)
@@ -98,10 +100,31 @@
   (setq emms-player-list '(emms-player-mpv)
 	emms-source-file-default-directory "/home/cam/Music/music"))
 
+(setq org-directory (concat (getenv "HOME") "/Documents/Org")
+      org-agenda-files (directory-files-recursively org-directory
+						  (rx bol
+						      (one-or-more (or lower-case ?-))
+						      ".org" eol)))
+
+(global-set-key (kbd "C-c a") 'org-agenda)
+
+(setq org-agenda-directory (concat org-directory "/Agenda")
+      org-agenda-work-file (concat org-agenda-directory "/work.org")
+      org-agenda-social-file (concat org-agenda-directory "/social.org")
+      org-agenda-personal-file (concat org-agenda-directory "/personal.org")
+
+      org-capture-templates
+      '(("u" "Uni Stuff" entry (file+headline org-agenda-work-file "Uni")
+	 "* TODO [#C] %?\nSCHEDULED: %t")
+      ("s" "Social Stuff" entry (file+headline org-agenda-social-file "Misc")
+       "* TODO [#C] %?\nSCHEDULED: %t")
+      ("p" "Personal" entry (file+headline org-agenda-personal-file "Stuff ToDo")
+       "* TODO [#C] %?\nSCHEDULED: %t")))
+
 (use-package ef-themes
   :defer nil
   :config
-  (load-theme 'ef-cherie t))
+  (load-theme 'ef-tritanopia-dark t))
 
 (tool-bar-mode -1)
 (menu-bar-mode -1)

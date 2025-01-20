@@ -6,7 +6,7 @@
 #+startup: overview
 
 
-* Start up
+* Satart up
 So the first thing that we need is to setup ~straight.el~ instead of ~package.el~.
 #+begin_src elisp
   (setq package-enable-at-startup nil)
@@ -36,6 +36,11 @@ And also, I don't want gnu's stuff at start up.
     (message "Hello Cam :) ."))
 
   (setq inhibit-startup-screen t)
+#+end_src
+
+And finally, start an emacs server.
+#+begin_src elisp
+  (server-start)
 #+end_src
 
 * Programming
@@ -147,13 +152,44 @@ The almighty emms.
 	  emms-source-file-default-directory "/home/cam/Music/music"))
 #+end_src
 
+* Org Mode
+The ~org-directory~ is just set to where all of my org files (beyond ones for specific projects, like this file) are stored.
+This includes my org agenda files.
+#+begin_src elisp
+  (setq org-directory (concat (getenv "HOME") "/Documents/Org")
+	org-agenda-files (directory-files-recursively org-directory
+						    (rx bol
+							(one-or-more (or lower-case ?-))
+							".org" eol)))
+
+  (global-set-key (kbd "C-c a") 'org-agenda)
+#+end_src
+
+It's also important to be able to quickly add new tasks to my agenda.
+There are a selection of ~org-agenda-xxx~ files, which just make the capture templates easier to write/modify.
+The capture templates themselves are seperated into different things that I need to do, making it easier to search them.
+#+begin_src elisp
+  (setq org-agenda-directory (concat org-directory "/Agenda")
+	org-agenda-work-file (concat org-agenda-directory "/work.org")
+	org-agenda-social-file (concat org-agenda-directory "/social.org")
+	org-agenda-personal-file (concat org-agenda-directory "/personal.org")
+
+	org-capture-templates
+	'(("u" "Uni Stuff" entry (file+headline org-agenda-work-file "Uni")
+	   "* TODO [#C] %?\nSCHEDULED: %t")
+	("s" "Social Stuff" entry (file+headline org-agenda-social-file "Misc")
+	 "* TODO [#C] %?\nSCHEDULED: %t")
+	("p" "Personal" entry (file+headline org-agenda-personal-file "Stuff ToDo")
+	 "* TODO [#C] %?\nSCHEDULED: %t")))
+#+end_src
+
 * Misc
 I want a theme.
 #+begin_src elisp
   (use-package ef-themes
     :defer nil
     :config
-    (load-theme 'ef-cherie t))
+    (load-theme 'ef-tritanopia-dark t))
 
   (tool-bar-mode -1)
   (menu-bar-mode -1)
@@ -161,4 +197,3 @@ I want a theme.
 
   (defalias 'yes-or-no-p 'y-o-n-p)
 #+end_src
-
