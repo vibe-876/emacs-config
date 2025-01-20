@@ -22,6 +22,20 @@
 (straight-use-package 'paredit)
 (add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode)
 
+(straight-use-package '(lean4-mode :type git
+				   :host github
+				   :repo "leanprover-community/lean4-mode"
+				   :files ("*.el" "data")))
+
+(add-to-list 'exec-path "/home/cam/.elan/bin")
+
+;; (use-package lean4-mode
+;;   :commands lean4-mode
+;;   :straight (lean4-mode :type git
+;; 			:host github
+;; 			:repo "leanprover-community/lean4-mode"
+;; 			:files ("*.el" "data")))
+
 (straight-use-package 'magit)
 
 (straight-use-package 'lsp-mode)

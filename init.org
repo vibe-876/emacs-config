@@ -42,6 +42,24 @@ Obvious reasons why I need to be including this.
   (add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode)
 #+end_src
 
+** Lean
+Lean 4 is a magical thing, and I want to be able to use it.
+#+begin_src elisp
+   (straight-use-package '(lean4-mode :type git
+				     :host github
+				     :repo "leanprover-community/lean4-mode"
+				     :files ("*.el" "data")))
+
+  (add-to-list 'exec-path "/home/cam/.elan/bin")
+
+  ;; (use-package lean4-mode
+  ;;   :commands lean4-mode
+  ;;   :straight (lean4-mode :type git
+  ;; 			:host github
+  ;; 			:repo "leanprover-community/lean4-mode"
+  ;; 			:files ("*.el" "data")))
+#+end_src
+
 ** Magit
 #+begin_src elisp
   (straight-use-package 'magit)
@@ -52,6 +70,7 @@ LSP mode is a language server protocol implementation, which seems like it could
 #+begin_src elisp
   (straight-use-package 'lsp-mode)
 #+end_src
+
 * Media
 ** Elfeed
 #+begin_src elisp
