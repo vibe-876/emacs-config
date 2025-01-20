@@ -23,74 +23,92 @@
 
 (setq inhibit-startup-screen t)
 
-(straight-use-package 'paredit)
-(add-hook 'emacs-lisp-mode-hook #'enable-paredit-mode)
-
-(straight-use-package '(lean4-mode :type git
-				   :host github
-				   :repo "leanprover-community/lean4-mode"
-				   :files ("*.el" "data")))
-
-(add-to-list 'exec-path "/home/cam/.elan/bin")
-
-;; (use-package lean4-mode
-;;   :commands lean4-mode
-;;   :straight (lean4-mode :type git
-;; 			:host github
-;; 			:repo "leanprover-community/lean4-mode"
-;; 			:files ("*.el" "data"))
-;;   :config
-;;   (add-to-list 'exec-path "/home/cam/.elan/bin"))
+(use-package paredit
+  :defer nil
+  :hook ((scheme-mode     . enable-paredit-mode)
+	 (emacs-lisp-mode . enable-paredit-mode)))
 
 (use-package geiser
   :straight t
   :defer nil
-  :hook (scheme-mode . enable-paredit-mode)
   :config
   (setq geiser-active-implementations '(guile)))
 
 (use-package geiser-guile
   :straight t
+  :defer t
+  :after (geiser)
   :config
   (setq geiser-guile-binary "/usr/bin/guile"))
 
-(straight-use-package 'magit)
+;; (straight-use-package '(lean4-mode :type git
+;; 				   :host github
+;; 				   :repo "leanprover-community/lean4-mode"
+;; 				   :files ("*.el" "data")))
 
-(straight-use-package 'lsp-mode)
+;; (add-to-list 'exec-path "/home/cam/.elan/bin")
 
-(straight-use-package 'elfeed)
-(global-set-key (kbd "C-c e") 'elfeed)
+(use-package lean4-mode
+  :commands lean4-mode
+  :straight (lean4-mode :type git
+			:host github
+			:repo "leanprover-community/lean4-mode"
+			:files ("*.el" "data"))
+  :config
+  (add-to-list 'exec-path "/home/cam/.elan/bin"))
 
-(setq elfeed-feeds
-      '(("https://planet.emacslife.com/atom.xml" blog emacs)
-	("https://summeremacs.github.io/posts/index.xml" blog emacs)
-	("https://xkcd.com/rss.xml" comic)
-	("https://www.smbc-comics.com/comic/rss" comic)
-	("https://www.monkeyuser.com/index.xml" comic)
-	("https://archlinux.org/feeds/news/" arch linux tech)
-	("https://wolfgirl.dev/blog/rss.xml" blog tech prog)
-	("https://izzys.casa/index.xml" blog tech prog)
-	("https://faultlore.com/blah/rss.xml" blog tech prog)
-	("https://welltypedwit.ch/rss.xml" tech blog)
-	("https://www.quantamagazine.org/feed/" sci news)
-	("https://feeds.libsyn.com/499093/rss" tech podcast)
-	("http://hackaday.libsyn.com/rss" tech podcast)
-	("https://rustacean-station.org/podcast.rss" tech prog podcast)
-	("https://risky.biz/feeds/risky-business-news/" tech security podcast)
-	("https://www.youtube.com/feeds/videos.xml?channel_id=UC3_kehZbfRz-KrjXIqeIiPw" blog video) ;; Leadhead
-	("https://www.youtube.com/feeds/videos.xml?channel_id=UCzfyYtgvkx5mLy8nlLlayYg" video show) ;; Helluva Boss
-	("https://www.youtube.com/feeds/videos.xml?channel_id=UCVHxJghKAB_kA_5LMM8MD3w" video phil) ;; oliSUNvia
-	("https://www.youtube.com/feeds/videos.xml?channel_id=UC3cpN6gcJQqcCM6mxRUo_dA" video spooky) ;; Wendigoon
-	("https://www.youtube.com/feeds/videos.xml?channel_id=UCIPfjC8FVLdul4-35JekB1g" video spooky) ;; ABSTRACT
-	("https://www.youtube.com/feeds/videos.xml?channel_id=UCtMVHI3AJD4Qk4hcbZnI9ZQ" video blog) ;; SOG
-	))
+;(straight-use-package 'magit)
+(use-package magit)
 
-(straight-use-package 'emms)
-(setq emms-player-list '(emms-player-mpv)
-      emms-source-file-default-directory "/home/cam/Music/music")
+;(straight-use-package 'lsp-mode)
+(use-package lsp-mode)
 
-(straight-use-package 'ef-themes)
-(load-theme 'ef-cherie t)
+(use-package elfeed
+  :defer t
+  :bind ("C-c e" . elfeed)
+  :config
+  (setq elfeed-feeds
+	'(("https://planet.emacslife.com/atom.xml" blog emacs)
+	  ("https://summeremacs.github.io/posts/index.xml" blog emacs)
+	  ("https://xkcd.com/rss.xml" comic)
+	  ("https://www.smbc-comics.com/comic/rss" comic)
+	  ("https://www.monkeyuser.com/index.xml" comic)
+	  ("https://archlinux.org/feeds/news/" arch linux tech)
+	  ("https://wolfgirl.dev/blog/rss.xml" blog tech prog)
+	  ("https://izzys.casa/index.xml" blog tech prog)
+	  ("https://faultlore.com/blah/rss.xml" blog tech prog)
+	  ("https://welltypedwit.ch/rss.xml" tech blog)
+	  ("https://www.quantamagazine.org/feed/" sci news)
+	  ("https://feeds.libsyn.com/499093/rss" tech podcast)
+	  ("http://hackaday.libsyn.com/rss" tech podcast)
+	  ("https://rustacean-station.org/podcast.rss" tech prog podcast)
+	  ("https://risky.biz/feeds/risky-business-news/" tech security podcast)
+	  ;; Leadhead
+	  ("https://www.youtube.com/feeds/videos.xml?channel_id=UC3_kehZbfRz-KrjXIqeIiPw" blog video)
+	  ;; Helluva Boss
+	  ("https://www.youtube.com/feeds/videos.xml?channel_id=UCzfyYtgvkx5mLy8nlLlayYg" video show)
+	  ;; oliSUNvia
+	  ("https://www.youtube.com/feeds/videos.xml?channel_id=UCVHxJghKAB_kA_5LMM8MD3w" video phil)
+	  ;; Wendigoon
+	  ("https://www.youtube.com/feeds/videos.xml?channel_id=UC3cpN6gcJQqcCM6mxRUo_dA" video spooky)
+	  ;; ABSTRACT
+	  ("https://www.youtube.com/feeds/videos.xml?channel_id=UCIPfjC8FVLdul4-35JekB1g" video spooky)
+	  ;; SOG
+	  ("https://www.youtube.com/feeds/videos.xml?channel_id=UCtMVHI3AJD4Qk4hcbZnI9ZQ" video blog))))
+
+;; (straight-use-package 'emms)
+;; (setq emms-player-list '(emms-player-mpv)
+;;       emms-source-file-default-directory "/home/cam/Music/music")
+(use-package emms
+  :defer t
+  :config
+  (setq emms-player-list '(emms-player-mpv)
+	emms-source-file-default-directory "/home/cam/Music/music"))
+
+(use-package ef-themes
+  :defer nil
+  :config
+  (load-theme 'ef-cherie t))
 
 (tool-bar-mode -1)
 (menu-bar-mode -1)
