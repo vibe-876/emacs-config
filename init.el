@@ -55,10 +55,8 @@
   :config
   (add-to-list 'exec-path "/home/cam/.elan/bin"))
 
-;(straight-use-package 'magit)
 (use-package magit)
 
-;(straight-use-package 'lsp-mode)
 (use-package lsp-mode)
 
 (use-package elfeed
@@ -94,9 +92,6 @@
 	  ;; SOG
 	  ("https://www.youtube.com/feeds/videos.xml?channel_id=UCtMVHI3AJD4Qk4hcbZnI9ZQ" video blog))))
 
-;; (straight-use-package 'emms)
-;; (setq emms-player-list '(emms-player-mpv)
-;;       emms-source-file-default-directory "/home/cam/Music/music")
 (use-package emms
   :defer t
   :config

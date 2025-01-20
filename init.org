@@ -91,14 +91,12 @@ Lean 4 is a magical thing, and I want to be able to use it.
 
 ** Magit
 #+begin_src elisp
-  ;(straight-use-package 'magit)
   (use-package magit)
 #+end_src
 
 ** LSP Mode
 LSP mode is a language server protocol implementation, which seems like it could be useful.
 #+begin_src elisp
-  ;(straight-use-package 'lsp-mode)
   (use-package lsp-mode)
 #+end_src
 
@@ -142,9 +140,6 @@ LSP mode is a language server protocol implementation, which seems like it could
 ** Emms
 The almighty emms.
 #+begin_src elisp
-  ;; (straight-use-package 'emms)
-  ;; (setq emms-player-list '(emms-player-mpv)
-  ;;       emms-source-file-default-directory "/home/cam/Music/music")
   (use-package emms
     :defer t
     :config
