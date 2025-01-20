@@ -23,6 +23,8 @@ So the first thing that we need is to setup ~straight.el~ instead of ~package.el
 	(goto-char (point-max))
 	(eval-print-last-sexp)))
     (load bootstrap-file nil 'nomessage))
+
+  (straight-use-package-mode 1)
 #+end_src
 
 And also, I don't want gnu's stuff at start up.
@@ -60,6 +62,21 @@ Lean 4 is a magical thing, and I want to be able to use it.
   ;; 			:files ("*.el" "data")))
 #+end_src
 
+** Scheme
+Scheme is a very elegant lisp, so I want to be able to use it (guile specifically).
+#+begin_src elisp
+  (use-package geiser
+    :straight t
+    :defer nil
+    :hook (scheme-mode . enable-paredit-mode)
+    :config
+    (setq geiser-active-implementations '(guile)))
+
+  (use-package geiser-guile
+    :straight t
+    :config
+    (setq geiser-guile-binary "/usr/bin/guile"))
+#+end_src
 ** Magit
 #+begin_src elisp
   (straight-use-package 'magit)

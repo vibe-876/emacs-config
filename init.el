@@ -13,6 +13,8 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
+(straight-use-package-mode 1)
+
 (defun display-startup-echo-area-message nil
   "I don't want gnu's stuff at startup, I want my stuff."
   (message "Hello Cam :) ."))
@@ -35,6 +37,18 @@
 ;; 			:host github
 ;; 			:repo "leanprover-community/lean4-mode"
 ;; 			:files ("*.el" "data")))
+
+(use-package geiser
+  :straight t
+  :defer nil
+  :hook (scheme-mode . enable-paredit-mode)
+  :config
+  (setq geiser-active-implementations '(guile)))
+
+(use-package geiser-guile
+  :straight t
+  :config
+  (setq geiser-guile-binary "/usr/bin/guile"))
 
 (straight-use-package 'magit)
 
