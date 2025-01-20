@@ -29,7 +29,7 @@ So the first thing that we need is to setup ~straight.el~ instead of ~package.el
 	use-package-always-ensure nil)
 #+end_src
 
-And also, I don't want gnu's stuff at start up.
+Also, I don't want gnu's stuff at start up.
 #+begin_src elisp
   (defun display-startup-echo-area-message nil
     "I don't want gnu's stuff at startup, I want my stuff."
@@ -39,6 +39,7 @@ And also, I don't want gnu's stuff at start up.
 #+end_src
 
 And finally, start an emacs server.
+This means that I can start new instances of emacs that just connect to this one, which means some code doesn't need to be evaluated again.
 #+begin_src elisp
   (server-start)
 #+end_src
@@ -83,6 +84,8 @@ Scheme is a very elegant lisp, so I want to be able to use it (guile specificall
 
 ** Lean
 Lean 4 is a magical thing, and I want to be able to use it.
+The mode for Lean needs to be downloaded from github, so ~straight~ is used for that.
+Elan (the installer-thing for Lean) needs have its binaries added to the path as well.
 #+begin_src elisp
   (use-package lean4-mode
     :commands lean4-mode
@@ -91,22 +94,27 @@ Lean 4 is a magical thing, and I want to be able to use it.
 			  :repo "leanprover-community/lean4-mode"
 			  :files ("*.el" "data"))
     :config
-    (add-to-list 'exec-path "/home/cam/.elan/bin"))
+    (add-to-list 'exec-path (concat (getenv "HOME")
+				    "/.elan/bin")))
 #+end_src
 
 ** Magit
+Magit is a git porcelain that is just amazing, and I can't live without it.
 #+begin_src elisp
   (use-package magit)
 #+end_src
 
 ** LSP Mode
-LSP mode is a language server protocol implementation, which seems like it could be useful.
+LSP mode is a language server protocol implementation.
+To be honest, I only really use it for Lean, but I might end up using it for more languages as well.
 #+begin_src elisp
   (use-package lsp-mode)
 #+end_src
 
 * Media
 ** Elfeed
+Elfeed is a rss feed for emacs.
+I really like it, and use it for all of my rss needs.
 #+begin_src elisp
   (use-package elfeed
     :defer t
@@ -143,7 +151,8 @@ LSP mode is a language server protocol implementation, which seems like it could
 #+end_src
 
 ** Emms
-The almighty emms.
+Emms (the Emacs MultiMedia System) can be used for various multimedia things.
+To be honest, I just use it for podcasts and music.
 #+begin_src elisp
   (use-package emms
     :defer t
@@ -187,6 +196,8 @@ The capture templates themselves are seperated into different things that I need
 
 * Misc
 I want a theme.
+I also prefer doing things without a mouse, so I've disabled toolbar stuff.
+Finally, I've simplified the yes-or-no prompts, so that y-or-n can be used instead.
 #+begin_src elisp
   (use-package ef-themes
     :defer nil

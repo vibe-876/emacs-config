@@ -55,7 +55,8 @@
 			:repo "leanprover-community/lean4-mode"
 			:files ("*.el" "data"))
   :config
-  (add-to-list 'exec-path "/home/cam/.elan/bin"))
+  (add-to-list 'exec-path (concat (getenv "HOME")
+				  "/.elan/bin")))
 
 (use-package magit)
 
