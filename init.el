@@ -124,6 +124,15 @@
 
 (global-set-key (kbd "C-c c") 'org-capture)
 
+(setq org-latex-listings 'minted
+      org-latex-pdf-process '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+			      "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+			      "pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f")
+
+      org-html-validation-link nil
+      org-export-with-author nil
+      org-export-with-toc nil)
+
 (use-package ef-themes
   :defer nil
   :config

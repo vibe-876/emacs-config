@@ -194,6 +194,20 @@ The capture templates themselves are seperated into different things that I need
   (global-set-key (kbd "C-c c") 'org-capture)
 #+end_src
 
+Alongside the agenda, I also want to change up some export settings.
+~minted~ does synatx highlighting in LaTeX from org mode exports, and requires the export command for LaTeX to be changed slightly (done by editing ~org-latex-pdf-process~).
+The bottom three variables are just changing some default export settings to my own preferences.
+#+begin_src elisp
+  (setq org-latex-listings 'minted
+	org-latex-pdf-process '("pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+				"pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f"
+				"pdflatex -shell-escape -interaction nonstopmode -output-directory %o %f")
+      
+	org-html-validation-link nil
+	org-export-with-author nil
+	org-export-with-toc nil)
+#+end_src
+
 * Misc
 I want a theme.
 I also prefer doing things without a mouse, so I've disabled toolbar stuff.
