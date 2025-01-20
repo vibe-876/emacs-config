@@ -24,7 +24,9 @@ So the first thing that we need is to setup ~straight.el~ instead of ~package.el
 	(eval-print-last-sexp)))
     (load bootstrap-file nil 'nomessage))
 
-  (straight-use-package-mode 1)
+  (straight-use-package 'use-package)
+  (setq straight-use-package-by-default t
+	use-package-always-ensure nil)
 #+end_src
 
 And also, I don't want gnu's stuff at start up.
@@ -47,7 +49,7 @@ Obvious reasons why I need to be including this.
 ** Lean
 Lean 4 is a magical thing, and I want to be able to use it.
 #+begin_src elisp
-   (straight-use-package '(lean4-mode :type git
+  (straight-use-package '(lean4-mode :type git
 				     :host github
 				     :repo "leanprover-community/lean4-mode"
 				     :files ("*.el" "data")))
@@ -59,7 +61,9 @@ Lean 4 is a magical thing, and I want to be able to use it.
   ;;   :straight (lean4-mode :type git
   ;; 			:host github
   ;; 			:repo "leanprover-community/lean4-mode"
-  ;; 			:files ("*.el" "data")))
+  ;; 			:files ("*.el" "data"))
+  ;;   :config
+  ;;   (add-to-list 'exec-path "/home/cam/.elan/bin"))
 #+end_src
 
 ** Scheme
@@ -74,9 +78,12 @@ Scheme is a very elegant lisp, so I want to be able to use it (guile specificall
 
   (use-package geiser-guile
     :straight t
+    :defer t
     :config
     (setq geiser-guile-binary "/usr/bin/guile"))
+
 #+end_src
+
 ** Magit
 #+begin_src elisp
   (straight-use-package 'magit)

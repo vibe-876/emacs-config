@@ -13,7 +13,9 @@
       (eval-print-last-sexp)))
   (load bootstrap-file nil 'nomessage))
 
-(straight-use-package-mode 1)
+(straight-use-package 'use-package)
+(setq straight-use-package-by-default t
+      use-package-always-ensure nil)
 
 (defun display-startup-echo-area-message nil
   "I don't want gnu's stuff at startup, I want my stuff."
@@ -36,7 +38,9 @@
 ;;   :straight (lean4-mode :type git
 ;; 			:host github
 ;; 			:repo "leanprover-community/lean4-mode"
-;; 			:files ("*.el" "data")))
+;; 			:files ("*.el" "data"))
+;;   :config
+;;   (add-to-list 'exec-path "/home/cam/.elan/bin"))
 
 (use-package geiser
   :straight t
