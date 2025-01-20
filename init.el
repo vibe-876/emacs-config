@@ -28,6 +28,11 @@
   :hook ((scheme-mode     . enable-paredit-mode)
 	 (emacs-lisp-mode . enable-paredit-mode)))
 
+(use-package rainbow-delimiters
+  :defer nil
+  :hook ((scheme-mode     . rainbow-delimiters-mode)
+	 (emacs-lisp-mode . rainbow-delimiters-mode)))
+
 (use-package geiser
   :straight t
   :defer nil
@@ -40,13 +45,6 @@
   :after (geiser)
   :config
   (setq geiser-guile-binary "/usr/bin/guile"))
-
-;; (straight-use-package '(lean4-mode :type git
-;; 				   :host github
-;; 				   :repo "leanprover-community/lean4-mode"
-;; 				   :files ("*.el" "data")))
-
-;; (add-to-list 'exec-path "/home/cam/.elan/bin")
 
 (use-package lean4-mode
   :commands lean4-mode

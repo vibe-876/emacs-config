@@ -42,11 +42,19 @@ And also, I don't want gnu's stuff at start up.
 ** Emacs Lisp/Scheme
 Obvious reasons why I need to be including this.
 I'm including both of these languages together because the config for them reuses a lot of packages.
+These packages are:
+- paredit, which is fancy bracket auto-completion.
+- rainbow-delimiters, which makes the brackets rainbow.
 #+begin_src elisp
   (use-package paredit
     :defer nil
     :hook ((scheme-mode     . enable-paredit-mode)
 	   (emacs-lisp-mode . enable-paredit-mode)))
+
+  (use-package rainbow-delimiters
+    :defer nil
+    :hook ((scheme-mode     . rainbow-delimiters-mode)
+	   (emacs-lisp-mode . rainbow-delimiters-mode)))
 #+end_src
 
 There are however, a few scheme specific things that I want as well.
@@ -71,13 +79,6 @@ Scheme is a very elegant lisp, so I want to be able to use it (guile specificall
 ** Lean
 Lean 4 is a magical thing, and I want to be able to use it.
 #+begin_src elisp
-  ;; (straight-use-package '(lean4-mode :type git
-  ;; 				   :host github
-  ;; 				   :repo "leanprover-community/lean4-mode"
-  ;; 				   :files ("*.el" "data")))
-
-  ;; (add-to-list 'exec-path "/home/cam/.elan/bin")
-
   (use-package lean4-mode
     :commands lean4-mode
     :straight (lean4-mode :type git
