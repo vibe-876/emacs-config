@@ -6,7 +6,7 @@
 #+startup: overview
 
 
-* Satart up
+* Start up
 So the first thing that we need is to setup ~straight.el~ instead of ~package.el~.
 #+begin_src elisp
   (setq package-enable-at-startup nil)
