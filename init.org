@@ -159,6 +159,8 @@ To be honest, I just use it for podcasts and music.
     :config
     (setq emms-player-list '(emms-player-mpv)
 	  emms-source-file-default-directory "/home/cam/Music/music"))
+
+  (emms-all)
 #+end_src
 
 * Org Mode
@@ -223,4 +225,10 @@ Finally, I've simplified the yes-or-no prompts, so that y-or-n can be used inste
   (scroll-bar-mode -1)
 
   (defalias 'yes-or-no-p 'y-o-n-p)
+#+end_src
+
+Finally, there are some things that I want loaded, that I don't want the world to be able to see.
+For this reason, a seperate file with this in is loaded.
+#+begin_src elisp
+  (load-file ".emacs.d/secrets.el")
 #+end_src

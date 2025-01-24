@@ -101,6 +101,8 @@
   (setq emms-player-list '(emms-player-mpv)
 	emms-source-file-default-directory "/home/cam/Music/music"))
 
+(emms-all)
+
 (setq org-directory (concat (getenv "HOME") "/Documents/Org")
       org-agenda-files (directory-files-recursively org-directory
 						  (rx bol
@@ -143,3 +145,5 @@
 (scroll-bar-mode -1)
 
 (defalias 'yes-or-no-p 'y-o-n-p)
+
+(load-file ".emacs.d/secrets.el")
