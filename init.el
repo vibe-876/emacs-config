@@ -58,6 +58,11 @@
   (add-to-list 'exec-path (concat (getenv "HOME")
 				  "/.elan/bin")))
 
+(use-package lsp-java
+  :defer t
+  :hook (java-mode . 'lsp)
+  :after (lsp-mode))
+
 (use-package magit)
 
 (use-package lsp-mode)
@@ -146,4 +151,5 @@
 
 (defalias 'yes-or-no-p 'y-o-n-p)
 
-(load-file ".emacs.d/secrets.el")
+(load-file (concat (getenv "HOME")
+		   "/.emacs.d/secrets.el"))

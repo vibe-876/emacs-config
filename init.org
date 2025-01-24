@@ -98,6 +98,16 @@ Elan (the installer-thing for Lean) needs have its binaries added to the path as
 				    "/.elan/bin")))
 #+end_src
 
+** Java
+Regrettably, I need to use Java for some of my university modules :(.
+Java is very gross (although maybe less gross than C++).
+#+begin_src elisp
+  (use-package lsp-java
+    :defer t
+    :hook (java-mode . 'lsp)
+    :after (lsp-mode))
+#+end_src
+
 ** Magit
 Magit is a git porcelain that is just amazing, and I can't live without it.
 #+begin_src elisp
@@ -230,5 +240,6 @@ Finally, I've simplified the yes-or-no prompts, so that y-or-n can be used inste
 Finally, there are some things that I want loaded, that I don't want the world to be able to see.
 For this reason, a seperate file with this in is loaded.
 #+begin_src elisp
-  (load-file ".emacs.d/secrets.el")
+  (load-file (concat (getenv "HOME")
+		     "/.emacs.d/secrets.el"))
 #+end_src
