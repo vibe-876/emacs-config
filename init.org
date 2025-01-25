@@ -122,7 +122,11 @@ To be honest, I only really use it for Lean, but I might end up using it for mor
 ~lsp-ui~ adds some graphical things to lsp.
 #+begin_src elisp
   (use-package lsp-mode)
-  (use-package lsp-ui)
+
+  (use-package lsp-ui
+    :after (lsp-mode))
+
+  (use-package company)
 #+end_src
 
 * Media
