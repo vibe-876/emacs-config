@@ -109,6 +109,33 @@ Java is very gross (although maybe less gross than C++).
     :after (:all lsp-mode magit))
 #+end_src
 
+One of the things that I want to be able to do, is to run code in a seperate buffer.
+I could actually read the docs...
+/Or/, I could just write something to do it myself, and that sounds like a lot more fun.
+
+In future, I want to rewrite this using ~comint-mode~, but that can be for later.
+Also, I am fully aware that just running ~(other-window 1)~ is a very lazy way to switch back to the original window, but it works for now.
+#+begin_src elisp
+  (defun cam/java-run-in-buffer (&optional filename)
+    "Just opens a buffer, and runs a Java program in it.
+  All it's doing is running java on the filename, and showing
+  the output in a buffer.
+
+  If FILENAME isn't given, then it will just run the current
+  buffer."
+    (interactive)
+    (let ((java-run-buffer-name "*cam/java-run*")
+	  (java-buffer-name (if filename
+				filename
+			      (buffer-name))))
+
+      (switch-to-buffer-other-window java-run-buffer-name)
+      (erase-buffer)
+      (start-process "*java-running-process*" java-run-buffer-name
+		     "java" java-buffer-name)
+      (other-window 1)))
+#+end_src
+
 ** Magit
 Magit is a git porcelain that is just amazing, and I can't live without it.
 #+begin_src elisp
@@ -120,6 +147,7 @@ LSP mode is a language server protocol implementation.
 To be honest, I only really use it for Lean, but I might end up using it for more languages as well.
 
 ~lsp-ui~ adds some graphical things to lsp.
+~company~ is for autocompletion, and allows me to (believe it or not) autocomplete!
 #+begin_src elisp
   (use-package lsp-mode)
 

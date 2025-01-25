@@ -64,6 +64,25 @@
 	 (lsp-mode  . lsp-java-mode))
   :after (:all lsp-mode magit))
 
+(defun cam/java-run-in-buffer (&optional filename)
+  "Just opens a buffer, and runs a Java program in it.
+All it's doing is running java on the filename, and showing
+the output in a buffer.
+
+If FILENAME isn't given, then it will just run the current
+buffer."
+  (interactive)
+  (let ((java-run-buffer-name "*cam/java-run*")
+	(java-buffer-name (if filename
+			      filename
+			    (buffer-name))))
+
+    (switch-to-buffer-other-window java-run-buffer-name)
+    (erase-buffer)
+    (start-process "*java-running-process*" java-run-buffer-name
+		   "java" java-buffer-name)
+    (other-window 1)))
+
 (use-package magit)
 
 (use-package lsp-mode)
