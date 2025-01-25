@@ -104,8 +104,8 @@ Java is very gross (although maybe less gross than C++).
 #+begin_src elisp
   (use-package lsp-java
     :defer t
-    :hook (java-mode . 'lsp)
-    :after (lsp-mode))
+    :hook (java-mode . #'lsp-mode)
+    :after (:all lsp-mode magit))
 #+end_src
 
 ** Magit

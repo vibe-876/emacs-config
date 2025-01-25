@@ -60,8 +60,8 @@
 
 (use-package lsp-java
   :defer t
-  :hook (java-mode . 'lsp)
-  :after (lsp-mode))
+  :hook (java-mode . #'lsp-mode)
+  :after (:all lsp-mode magit))
 
 (use-package magit)
 
