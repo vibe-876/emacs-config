@@ -115,6 +115,7 @@ I could actually read the docs...
 
 In future, I want to rewrite this using ~comint-mode~, but that can be for later.
 Also, I am fully aware that just running ~(other-window 1)~ is a very lazy way to switch back to the original window, but it works for now.
+I've bound it to ~C-c C-r~, because that's the first "easy" keybinding that wasn't in use.
 #+begin_src elisp
   (defun cam/java-run-in-buffer (&optional filename)
     "Just opens a buffer, and runs a Java program in it.
@@ -134,6 +135,9 @@ Also, I am fully aware that just running ~(other-window 1)~ is a very lazy way t
       (start-process "*java-running-process*" java-run-buffer-name
 		     "java" java-buffer-name)
       (other-window 1)))
+
+  (add-hook 'java-mode-hook
+	    (lambda () (local-set-key (kbd "C-c C-r") #'cam/java-run-in-buffer)))
 #+end_src
 
 ** Magit

@@ -83,6 +83,9 @@ buffer."
 		   "java" java-buffer-name)
     (other-window 1)))
 
+(add-hook 'java-mode-hook
+	  (lambda () (local-set-key (kbd "C-c C-r") #'cam/java-run-in-buffer)))
+
 (use-package magit)
 
 (use-package lsp-mode)
