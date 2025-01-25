@@ -48,6 +48,20 @@
   :config
   (setq geiser-guile-binary "/usr/bin/guile"))
 
+(use-package haskell-mode
+  :hook ((haskell-mode          . lsp)
+	 (haskell-literate-mode . lsp))
+  :bind
+  (:map haskell-mode-map ("C-c C-c" . haskell-compile))
+  (:map haskell-cabal-mode-map ("C-c C-c" . haskell-compile))
+  :config
+  (let ((ghcup-path (concat (getenv "HOME") "/.ghcup/bin")))
+    (setenv "PATH" (concat (getenv "PATH") ":" ghcup-path))
+    (add-to-list 'exec-path ghcup-path)))
+
+(use-package lsp-haskell
+  :after (haskell-mode))
+
 (use-package lean4-mode
   :commands lean4-mode
   :straight (lean4-mode :type git
