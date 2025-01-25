@@ -118,8 +118,11 @@ Magit is a git porcelain that is just amazing, and I can't live without it.
 ** LSP Mode
 LSP mode is a language server protocol implementation.
 To be honest, I only really use it for Lean, but I might end up using it for more languages as well.
+
+~lsp-ui~ adds some graphical things to lsp.
 #+begin_src elisp
   (use-package lsp-mode)
+  (use-package lsp-ui)
 #+end_src
 
 * Media

@@ -67,6 +67,7 @@
 (use-package magit)
 
 (use-package lsp-mode)
+(use-package lsp-ui)
 
 (use-package elfeed
   :defer t
