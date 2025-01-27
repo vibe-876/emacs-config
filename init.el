@@ -137,6 +137,7 @@ buffer."
 	  ("https://izzys.casa/index.xml" blog tech prog)
 	  ("https://faultlore.com/blah/rss.xml" blog tech prog)
 	  ("https://welltypedwit.ch/rss.xml" tech blog)
+	  ("https://feeds.bbci.co.uk/news/bbcindepth/rss.xml" news bbc)
 	  ("https://www.quantamagazine.org/feed/" sci news)
 	  ("https://feeds.libsyn.com/499093/rss" tech podcast)
 	  ("http://hackaday.libsyn.com/rss" tech podcast)
