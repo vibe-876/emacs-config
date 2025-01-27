@@ -60,6 +60,15 @@
   (setenv "PATH" (concat (concat (getenv "HOME") "/.elan/bin" ":")
 			 (getenv "PATH"))))
 
+(use-package rust-mode
+  :config
+  (let ((cargo-path)) (concat (getenv "HOME")
+			      "/cargo/bin")
+
+       (setenv "PATH" (concat (getenv "PATH")
+			      ":" cargo-path))
+       (add-to-list 'exec-path cargo-path)))
+
 (use-package haskell-mode
   :hook ((haskell-mode          . interactive-haskell-mode)
 	 (haskell-mode          . lsp)

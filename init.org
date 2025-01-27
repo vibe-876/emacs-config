@@ -100,6 +100,22 @@ Elan (the installer-thing for Lean) needs have its binaries added to the path as
 			   (getenv "PATH"))))
 #+end_src
 
+** Rust
+Rust is pretty.
+~rust-mode~ just gives the basics, which is all that I need for learning the language.
+
+I might setup ~rustic-mode~ in future, but that's still up in the air.
+#+begin_src elisp
+  (use-package rust-mode
+    :config
+    (let ((cargo-path)) (concat (getenv "HOME")
+				"/cargo/bin")
+
+	 (setenv "PATH" (concat (getenv "PATH")
+				":" cargo-path))
+	 (add-to-list 'exec-path cargo-path)))
+#+end_src
+
 ** Haskell
 Haskell is just beautiful -- alongside lisp, it is the language that got me into more alt kinds of programming.
 
