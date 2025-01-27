@@ -48,8 +48,22 @@
   :config
   (setq geiser-guile-binary "/usr/bin/guile"))
 
+(use-package lean4-mode
+  :commands lean4-mode
+  :straight (lean4-mode :type git
+			:host github
+			:repo "leanprover-community/lean4-mode"
+			:files ("*.el" "data"))
+  :config
+  (add-to-list 'exec-path (concat (getenv "HOME")
+				  "/.elan/bin"))
+  (setenv "PATH" (concat (concat (getenv "HOME") "/.elan/bin" ":")
+			 (getenv "PATH"))))
+
 (use-package haskell-mode
-  :hook ((haskell-mode          . lsp)
+  :hook ((haskell-mode          . interactive-haskell-mode)
+	 (haskell-mode          . lsp)
+	 (haskell-literate-mode . interactive-haskell-mode)
 	 (haskell-literate-mode . lsp))
   :bind
   (:map haskell-mode-map ("C-c C-c" . haskell-compile))
@@ -61,16 +75,6 @@
 
 (use-package lsp-haskell
   :after (haskell-mode))
-
-(use-package lean4-mode
-  :commands lean4-mode
-  :straight (lean4-mode :type git
-			:host github
-			:repo "leanprover-community/lean4-mode"
-			:files ("*.el" "data"))
-  :config
-  (add-to-list 'exec-path (concat (getenv "HOME")
-				  "/.elan/bin")))
 
 (use-package lsp-java
   :defer t
@@ -191,7 +195,7 @@ buffer."
 (menu-bar-mode -1)
 (scroll-bar-mode -1)
 
-(defalias 'yes-or-no-p 'y-o-n-p)
+;(defalias 'yes-or-no-p 'y-o-n-p)
 
 (load-file (concat (getenv "HOME")
 		   "/.emacs.d/secrets.el"))

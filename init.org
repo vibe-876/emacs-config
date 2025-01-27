@@ -82,26 +82,6 @@ Scheme is a very elegant lisp, so I want to be able to use it (guile specificall
 
 #+end_src
 
-** Haskell
-Haskell is just beautiful -- alongside lisp, it is the language that got me into more alt kinds of programming.
-
-~haskell-mode~ is just the fundamental mode for haskell, which gives all of the "basic" editing commands
-~lsp-haskell~ is a language server client for haskell, which I personally find very useful.
-#+begin_src elisp
-  (use-package haskell-mode
-    :hook ((haskell-mode          . lsp)
-	   (haskell-literate-mode . lsp))
-    :bind
-    (:map haskell-mode-map ("C-c C-c" . haskell-compile))
-    (:map haskell-cabal-mode-map ("C-c C-c" . haskell-compile))
-    :config
-    (let ((ghcup-path (concat (getenv "HOME") "/.ghcup/bin")))
-      (setenv "PATH" (concat (getenv "PATH") ":" ghcup-path))
-      (add-to-list 'exec-path ghcup-path)))
-
-  (use-package lsp-haskell
-    :after (haskell-mode))
-#+end_src
 ** Lean
 Lean 4 is a magical thing, and I want to be able to use it.
 The mode for Lean needs to be downloaded from github, so ~straight~ is used for that.
@@ -115,7 +95,32 @@ Elan (the installer-thing for Lean) needs have its binaries added to the path as
 			  :files ("*.el" "data"))
     :config
     (add-to-list 'exec-path (concat (getenv "HOME")
-				    "/.elan/bin")))
+				    "/.elan/bin"))
+    (setenv "PATH" (concat (concat (getenv "HOME") "/.elan/bin" ":")
+			   (getenv "PATH"))))
+#+end_src
+
+** Haskell
+Haskell is just beautiful -- alongside lisp, it is the language that got me into more alt kinds of programming.
+
+~haskell-mode~ is just the fundamental mode for haskell, which gives all of the "basic" editing commands
+~lsp-haskell~ is a language server client for haskell, which I personally find very useful.
+#+begin_src elisp
+  (use-package haskell-mode
+    :hook ((haskell-mode          . interactive-haskell-mode)
+	   (haskell-mode          . lsp)
+	   (haskell-literate-mode . interactive-haskell-mode)
+	   (haskell-literate-mode . lsp))
+    :bind
+    (:map haskell-mode-map ("C-c C-c" . haskell-compile))
+    (:map haskell-cabal-mode-map ("C-c C-c" . haskell-compile))
+    :config
+    (let ((ghcup-path (concat (getenv "HOME") "/.ghcup/bin")))
+      (setenv "PATH" (concat (getenv "PATH") ":" ghcup-path))
+      (add-to-list 'exec-path ghcup-path)))
+
+  (use-package lsp-haskell
+    :after (haskell-mode))
 #+end_src
 
 ** Java
@@ -294,7 +299,7 @@ Finally, I've simplified the yes-or-no prompts, so that y-or-n can be used inste
   (menu-bar-mode -1)
   (scroll-bar-mode -1)
 
-  (defalias 'yes-or-no-p 'y-o-n-p)
+  ;(defalias 'yes-or-no-p 'y-o-n-p)
 #+end_src
 
 Finally, there are some things that I want loaded, that I don't want the world to be able to see.
