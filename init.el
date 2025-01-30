@@ -69,6 +69,11 @@
 			      ":" cargo-path))
        (add-to-list 'exec-path cargo-path)))
 
+(use-package rustic
+  :hook (rustic-mode . lsp-mode)
+  :custom
+  (rustic-analyzer-command '("rustup" "run" "stable" "rust-analyzer")))
+
 (use-package haskell-mode
   :hook ((haskell-mode          . interactive-haskell-mode)
 	 (haskell-mode          . lsp)

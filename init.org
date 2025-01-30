@@ -103,8 +103,7 @@ Elan (the installer-thing for Lean) needs have its binaries added to the path as
 ** Rust
 Rust is pretty.
 ~rust-mode~ just gives the basics, which is all that I need for learning the language.
-
-I might setup ~rustic-mode~ in future, but that's still up in the air.
+~rustic~ gives me a bunch of extra features, and I've also hooked into ~lsp-mode~.
 #+begin_src elisp
   (use-package rust-mode
     :config
@@ -114,6 +113,11 @@ I might setup ~rustic-mode~ in future, but that's still up in the air.
 	 (setenv "PATH" (concat (getenv "PATH")
 				":" cargo-path))
 	 (add-to-list 'exec-path cargo-path)))
+
+  (use-package rustic
+    :hook (rustic-mode . lsp-mode)
+    :custom
+    (rustic-analyzer-command '("rustup" "run" "stable" "rust-analyzer")))
 #+end_src
 
 ** Haskell
