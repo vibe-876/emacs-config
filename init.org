@@ -210,7 +210,23 @@ To be honest, I only really use it for Lean, but I might end up using it for mor
 ** Elfeed
 Elfeed is a rss feed for emacs.
 I really like it, and use it for all of my rss needs.
+
+~cam/elfeed-remove-iplayer~ is used to mark bbc iplayer and sounds entries as read, because I only want the articles.
+I'll probably give it some binding in the future, but that can be later.
 #+begin_src elisp
+  (defun cam/elfeed-remove-iplayer ()
+    "I don't want iplayer or sounds from bbc,
+  just the articles. This marks them as read."
+    (interactive)
+    (let ((new-filter \"@1-month-ago +unread +bbc !article\"))
+
+      (setq elfeed-search-filter new-filter)
+      (elfeed-search-update :force)
+      (mark-whole-buffer)
+      (elfeed-search-untag-all-unread)
+      (elfeed-search-clear-filter)
+      (message \"BBC iplayer stuff removed.\")))
+
   (use-package elfeed
     :defer t
     :bind ("C-c e" . elfeed)
