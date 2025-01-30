@@ -131,14 +131,14 @@ buffer."
   "I don't want iplayer or sounds from bbc,
 just the articles. This marks them as read."
   (interactive)
-  (let ((new-filter \"@1-month-ago +unread +bbc !article\"))
+  (let ((new-filter "@1-month-ago +unread +bbc !article"))
 
     (setq elfeed-search-filter new-filter)
     (elfeed-search-update :force)
     (mark-whole-buffer)
     (elfeed-search-untag-all-unread)
     (elfeed-search-clear-filter)
-    (message \"BBC iplayer stuff removed.\")))
+    (message "BBC iplayer stuff removed.")))
 
 (use-package elfeed
   :defer t
