@@ -261,7 +261,15 @@ I'll probably give it some binding in the future, but that can be later.
 	    ;; SOG
 	    ("https://www.youtube.com/feeds/videos.xml?channel_id=UCtMVHI3AJD4Qk4hcbZnI9ZQ" video blog))))
 #+end_src
-
+** ERC
+#+begin_src elisp
+  (setq erc-server "irc.libera.chat"
+	etc-track-shorten-start 8
+	erc-kill-buffer-on-part t
+	erc-auto-query 'bury
+	erc-user-full-name "cam a."
+	erc-nick "vibe876")
+#+end_src
 ** Emms
 Emms (the Emacs MultiMedia System) can be used for various multimedia things.
 To be honest, I just use it for podcasts and music.

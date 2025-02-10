@@ -174,6 +174,13 @@ just the articles. This marks them as read."
 	  ;; SOG
 	  ("https://www.youtube.com/feeds/videos.xml?channel_id=UCtMVHI3AJD4Qk4hcbZnI9ZQ" video blog))))
 
+(setq erc-server "irc.libera.chat"
+      etc-track-shorten-start 8
+      erc-kill-buffer-on-part t
+      erc-auto-query 'bury
+      erc-user-full-name "cam a."
+      erc-nick "vibe876")
+
 (use-package emms
   :defer t
   :config
