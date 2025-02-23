@@ -45,7 +45,7 @@ This means that I can start new instances of emacs that just connect to this one
 #+end_src
 
 * Programming
-** Emacs Lisp/Scheme
+** Lisp(s)
 Obvious reasons why I need to be including this.
 I'm including both of these languages together because the config for them reuses a lot of packages.
 These packages are:
@@ -55,12 +55,14 @@ These packages are:
   (use-package paredit
     :defer nil
     :hook ((scheme-mode     . enable-paredit-mode)
-	   (emacs-lisp-mode . enable-paredit-mode)))
+	   (emacs-lisp-mode . enable-paredit-mode)
+	   (clojure-mode    . enable-paredit-mode)))
 
   (use-package rainbow-delimiters
     :defer nil
     :hook ((scheme-mode     . rainbow-delimiters-mode)
-	   (emacs-lisp-mode . rainbow-delimiters-mode)))
+	   (emacs-lisp-mode . rainbow-delimiters-mode)
+	   (clojure-mode    . rainbow-delimiters-mode)))
 #+end_src
 
 There are however, a few scheme specific things that I want as well.
@@ -82,6 +84,12 @@ Scheme is a very elegant lisp, so I want to be able to use it (guile specificall
 
 #+end_src
 
+More recently, I've wanted to use clojure as well, since my uni is forcing me to use Java.
+#+begin_src elisp
+  (use-package cider
+    :straight t
+    :after (paredit rainbow-delimiters))
+#+end_src
 ** Lean
 Lean 4 is a magical thing, and I want to be able to use it.
 The mode for Lean needs to be downloaded from github, so ~straight~ is used for that.

@@ -28,12 +28,14 @@
 (use-package paredit
   :defer nil
   :hook ((scheme-mode     . enable-paredit-mode)
-	 (emacs-lisp-mode . enable-paredit-mode)))
+	 (emacs-lisp-mode . enable-paredit-mode)
+	 (clojure-mode    . enable-paredit-mode)))
 
 (use-package rainbow-delimiters
   :defer nil
   :hook ((scheme-mode     . rainbow-delimiters-mode)
-	 (emacs-lisp-mode . rainbow-delimiters-mode)))
+	 (emacs-lisp-mode . rainbow-delimiters-mode)
+	 (clojure-mode    . rainbow-delimiters-mode)))
 
 (use-package geiser
   :straight t
@@ -47,6 +49,10 @@
   :after (geiser)
   :config
   (setq geiser-guile-binary "/usr/bin/guile"))
+
+(use-package cider
+  :straight t
+  :after (paredit rainbow-delimiters))
 
 (use-package lean4-mode
   :commands lean4-mode
