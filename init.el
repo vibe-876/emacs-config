@@ -240,6 +240,8 @@ just the articles. This marks them as read."
 
 ;(defalias 'yes-or-no-p 'y-o-n-p)
 
+(use-package casual-suite)
+
 (use-package sequed
   :defer t)
 

@@ -357,6 +357,11 @@ Finally, I've simplified the yes-or-no prompts, so that y-or-n can be used inste
   ;(defalias 'yes-or-no-p 'y-o-n-p)
 #+end_src
 
+The casual suite is a very powerful collection of packages, that simplify the usage of a lot of tools.
+#+begin_src elisp
+  (use-package casual-suite)
+#+end_src
+
 I have no idea where to put this, but I've been getting really into bioinformatics recently, so I want to be able to do that in emacs.
 #+begin_src elisp
   (use-package sequed
