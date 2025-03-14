@@ -1,8 +1,8 @@
 :PROPERTIES:
 :header-args: :session init :tangle init.el
 :END:
-#+title: Emacs Config File
 #+author: Camilla A.
+#+title: Emacs Config File
 #+startup: overview
 
 
@@ -136,9 +136,9 @@ Haskell is just beautiful -- alongside lisp, it is the language that got me into
 #+begin_src elisp
   (use-package haskell-mode
     :hook ((haskell-mode          . interactive-haskell-mode)
-	   (haskell-mode          . lsp)
-	   (haskell-literate-mode . interactive-haskell-mode)
-	   (haskell-literate-mode . lsp))
+  	   (haskell-mode          . lsp)
+  	   (haskell-literate-mode . interactive-haskell-mode)
+  	   (haskell-literate-mode . lsp))
     :bind
     (:map haskell-mode-map ("C-c C-c" . haskell-compile))
     (:map haskell-cabal-mode-map ("C-c C-c" . haskell-compile))
@@ -155,11 +155,13 @@ Haskell is just beautiful -- alongside lisp, it is the language that got me into
 Regrettably, I need to use Java for some of my university modules :(.
 Java is very gross (although maybe less gross than C++).
 #+begin_src elisp
-  (use-package lsp-java
-    :defer t
-    :hook ((java-mode . lsp-mode)
-	   (lsp-mode  . lsp-java-mode))
-    :after (:all lsp-mode magit))
+  ;; (use-package lsp-java
+  ;;   :defer t
+  ;;   :hook ((java-mode . lsp-mode)
+  ;; 	   (lsp-mode  . lsp-java-mode))
+  ;;   :after (:all lsp-mode magit)
+  ;;   :config
+  ;;   (setq lsp-enable-snippet nil))
 #+end_src
 
 One of the things that I want to be able to do, is to run code in a seperate buffer.
@@ -346,13 +348,19 @@ Finally, I've simplified the yes-or-no prompts, so that y-or-n can be used inste
   (use-package ef-themes
     :defer nil
     :config
-    (load-theme 'ef-tritanopia-dark t))
+    (load-theme 'ef-night t))
 
   (tool-bar-mode -1)
   (menu-bar-mode -1)
   (scroll-bar-mode -1)
 
   ;(defalias 'yes-or-no-p 'y-o-n-p)
+#+end_src
+
+I have no idea where to put this, but I've been getting really into bioinformatics recently, so I want to be able to do that in emacs.
+#+begin_src elisp
+  (use-package sequed
+    :defer t)
 #+end_src
 
 Finally, there are some things that I want loaded, that I don't want the world to be able to see.
