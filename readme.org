@@ -2,4 +2,4 @@
 #+author: Camilla A.
 
 If you want to use this config, just move it into your ~$HOME/.emacs.d/~, and restart emacs.
-I can't promise that this will work on your machine, but if it does, feel free to ping me a message, and I can try to fix it.
+I can't promise that this will work on your machine, but if it doesn't work, feel free to ping me a message, and I can try to fix it.
