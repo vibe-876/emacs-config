@@ -216,6 +216,16 @@ To be honest, I only really use it for Lean, but I might end up using it for mor
   (use-package company)
 #+end_src
 
+** Building
+Something that almost all programming languages have in common is makefiles.
+#+begin_src elisp
+  (require 'make-mode)
+  (define-key makefile-mode-map (kbd "C-o") (lambda nil
+  					    "Call casual-make."
+  					    (interactive)
+  					    (casual-make-tmenu)))
+#+end_src
+
 * Media
 ** Elfeed
 Elfeed is a rss feed for emacs.

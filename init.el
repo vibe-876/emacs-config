@@ -135,6 +135,12 @@ buffer."
 
 (use-package company)
 
+(require 'make-mode)
+(define-key makefile-mode-map (kbd "C-o") (lambda nil
+					    "Call casual-make."
+					    (interactive)
+					    (casual-make-tmenu)))
+
 (defun cam/elfeed-remove-iplayer ()
   "I don't want iplayer or sounds from bbc,
 just the articles. This marks them as read."
