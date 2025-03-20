@@ -3,3 +3,6 @@
 
 If you want to use this config, just move it into your ~$HOME/.emacs.d/~, and restart emacs.
 I can't promise that this will work on your machine, but if it doesn't work, feel free to ping me a message, and I can try to fix it.
+
+I only write by hand into ~init.org~, which is then tangled into ~init.el~, and if you want to use this I recommend doing the same.
+We <3 literate programming.
