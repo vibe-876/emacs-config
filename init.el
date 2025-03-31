@@ -175,6 +175,7 @@ just the articles. This marks them as read."
 	    ("http://hackaday.libsyn.com/rss" tech podcast)
 	    ("https://rustacean-station.org/podcast.rss" tech prog podcast)
 	    ("https://risky.biz/feeds/risky-business-news/" tech security podcast)
+	    ("https://churchofturing.github.io/feed.xml" tech blog)
 	    ;; Leadhead
 	    ("https://www.youtube.com/feeds/videos.xml?channel_id=UC3_kehZbfRz-KrjXIqeIiPw" blog video)
 	    ;; Helluva Boss
